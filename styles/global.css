@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@font-face {
+  font-family: YanoneKaffeesatz-Bold;
+  src: url(/fonts/YanoneKaffeesatz-Bold.ttf);
+}
+
 *,
 *::before,
 *::after {
@@ -9,32 +15,12 @@
 }
 
 body {
-  @apply bg-white;
-  font-family: 'Inter', sans-serif;
-}
-
-.twitter-tweet {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.display {
-  font-family: 'Sora', sans-serif;
+  background-color: white;
+  font-family: 'Baby Doll', sans-serif;
 }
 
 .body-block {
   @apply max-w-7xl mx-auto relative z-10;
-}
-
-/* p for titles/headings */
-p {
-  font-family: 'Sora', sans-serif;
-  @apply text-foreground;
-}
-
-/* span for normal text */
-span {
-  @apply text-foreground-secondary font-extralight;
 }
 
 /* Gradient block */
@@ -60,8 +46,4 @@ span {
 
 .text-mochi-gradient {
   @apply text-transparent uppercase bg-clip-text bg-gradient-to-r from-mochi-300 via-mochi-600 to-mochi-300;
-}
-
-iframe[id^='telegram-login'] {
-  display: none;
 }

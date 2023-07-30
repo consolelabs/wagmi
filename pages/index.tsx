@@ -1,29 +1,30 @@
 import { GetServerSideProps } from 'next'
-import { Layout } from '~app/layout'
-import { SEO } from '~app/layout/seo'
+import { Layout } from '~components/layout'
+import { SEO } from '~components/layout/seo'
 import ComicViewport from '~components/ComicViewport'
 
 import NotionClient from '~utils/notion'
 import { IComic } from '~utils/notion/types'
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getStaticProps: GetServerSideProps = async (ctx) => {
   const data = await NotionClient.getLatestComic()
 
   return {
     props: {
       ...data,
     },
+    revalidate: 300, // 5 minutes, notion image cache is 1 hour
   }
 }
 
 export default function IndexPage({
   data,
-  nextRandomID,
+  maxID,
   prevID,
   nextID,
 }: {
   data: IComic
-  nextRandomID: number
+  maxID: number
   prevID: string
   nextID?: string | null
 }) {
@@ -31,10 +32,10 @@ export default function IndexPage({
     <div className="relative overflow-hidden">
       <Layout>
         <SEO />
-        <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block px-6 md:px-12">
+        <div className="relative w-screen">
           <ComicViewport
             data={data}
-            nextRandomID={nextRandomID}
+            maxID={maxID}
             prevID={prevID}
             nextID={nextID}
           />

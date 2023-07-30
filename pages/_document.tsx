@@ -1,5 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
-import { CONFIG } from '~app/layout/seo'
+import { CONFIG } from '~components/layout/seo'
 import { HOME_URL } from '~envs'
 
 class MyDocument extends Document {
