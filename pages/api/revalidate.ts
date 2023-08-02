@@ -5,12 +5,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const { page_number } = req.query
-    if (page_number) {
-      await res.revalidate('/commics/' + page_number) // revalidate the commic details page
-    } else {
-      await res.revalidate('/') // revalidate the homepage
-    }
+    const { path = '/' } = req.body
+    await res.revalidate(path)
 
     return res.json({ revalidated: true })
   } catch (err) {

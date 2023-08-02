@@ -42,6 +42,7 @@ function Navigation({
   const { slug = '' } = router.query
   const [nextSlug, setNextSlug] = useState<string | null>(null)
   const [newestSlug, setNewestSlug] = useState<string | null>(null)
+  const isNewest = `/comics/${newestSlug}` === router.asPath
 
   useEffect(() => {
     fetcher
@@ -55,7 +56,7 @@ function Navigation({
   }, [slug])
 
   return (
-    <div className="mt-4 border-b border-dashboard-gray-4 p-4 md:p-6">
+    <div className="sticky top-0 mt-4 border-b border-dashboard-gray-4 p-4 md:p-6 z-10 bg-white-pure">
       <div className="max-w-2xl mx-auto flex items-center justify-between space-x-2">
         <div className="w-1/3">
           <Link
@@ -76,8 +77,8 @@ function Navigation({
               width={195}
               height={72}
               className={classNames('absolute scale-110 group-hover:block', {
-                hidden: router.route !== '/comics',
-                block: router.route === '/comics',
+                hidden: router.asPath !== '/comics',
+                block: router.asPath === '/comics',
               })}
             />
           </Link>
@@ -99,9 +100,9 @@ function Navigation({
               key="random"
               className="relative z-10 flex flex-col items-center justify-center cursor-pointer"
               disabled={!nextSlug}
-              onClick={() =>
-                router.push('/comics/[slug]', `/comics/${nextSlug}`)
-              }
+              onClick={() => {
+                router.push(`/comics/${nextSlug}`)
+              }}
             >
               <p>RANDOM</p>
               <Image
@@ -126,7 +127,10 @@ function Navigation({
               alt="all commic"
               width={195}
               height={72}
-              className="absolute z-0 scale-110 hidden group-hover:block"
+              className={classNames('absolute scale-110 group-hover:block', {
+                hidden: isNewest || !router.asPath.includes('/comics/'),
+                block: !isNewest && router.asPath.includes('/comics/'),
+              })}
             />
           </div>
         </div>
@@ -145,7 +149,10 @@ function Navigation({
                 alt="all commic"
                 width={195}
                 height={72}
-                className="absolute scale-110 hidden group-hover:block"
+                className={classNames('absolute scale-110 group-hover:block', {
+                  hidden: !isNewest,
+                  block: isNewest,
+                })}
               />
             </>
           </NavLink>

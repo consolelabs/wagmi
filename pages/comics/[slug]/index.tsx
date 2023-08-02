@@ -15,7 +15,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       props: {
         ...data,
       },
-      revalidate: 300, // 50 minutes, notion image cache is 1 hour
+      revalidate: 10,
     }
   } catch (err) {
     console.error(err)
@@ -66,7 +66,7 @@ export default function IndexPage({
   nextID?: string | null
 }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Layout>
         <SEO />
         <div className="relative w-screen">

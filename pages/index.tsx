@@ -13,7 +13,7 @@ export const getStaticProps: GetServerSideProps = async (ctx) => {
     props: {
       ...data,
     },
-    revalidate: 300, // 5 minutes, notion image cache is 1 hour
+    revalidate: 10,
   }
 }
 
@@ -29,7 +29,7 @@ export default function IndexPage({
   nextID?: string | null
 }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Layout>
         <SEO />
         <div className="relative w-screen">

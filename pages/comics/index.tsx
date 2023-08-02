@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Layout } from '~components/layout'
 
 import { SEO } from '~components/layout/seo'
@@ -11,9 +11,16 @@ import Navigation from '~components/ComicViewport/Navigation'
 import NotionRichText from '~components/NotionRichtext'
 import { getNotionColor } from '~utils/color'
 import NotionClient from '~utils/notion'
-import { IComic, IComicRsp } from '~utils/notion/types'
-import { getFileURL } from '~utils/notion/utils'
+import { IComic } from '~utils/notion/types'
+import {
+  getFileURL,
+  getPageNamePlainText,
+  shouldRefreshPage,
+} from '~utils/notion/utils'
 import { formatDate } from '~utils/time'
+import slugify from 'slugify'
+import { fetcher } from '~utils/fetcher'
+import { sleep } from '@dwarvesf/react-utils'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const pages: Array<IComic> = []
@@ -33,7 +40,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     props: {
       initialData: pages,
     },
-    revalidate: 10, // every 10 seconds
+    revalidate: 10,
   }
 }
 
@@ -53,8 +60,30 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
     return initialData
   }, [initialData, tag])
 
+  const shouldReload = shouldRefreshPage(data[0].properties.Photo.files[0])
+
+  useEffect(() => {
+    console.log(`[ShouldReload]`, shouldReload)
+
+    if (shouldReload === 'never') {
+      return
+    }
+
+    fetcher
+      .post(`/api/revalidate`, { path: router.asPath })
+      .then(() => sleep(500)) // wait a bit
+      .then(() => {
+        if (shouldReload === 'full') {
+          router.reload()
+        }
+      })
+      .catch((err) => {
+        console.error(`[ERROR]`, err)
+      })
+  }, [router, shouldReload])
+
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Layout>
         <SEO />
         <Navigation />
@@ -111,8 +140,9 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
                 )}
               >
                 <Link
-                  href="/comics/[slug]"
-                  as={`/comics/${item.properties.CID.number}`}
+                  href={`/comics/${item.properties.CID.number}-${slugify(
+                    getPageNamePlainText(item),
+                  )}`}
                   className={classNames(
                     'relative z-10 block border border-black rounded-lg overflow-hidden',
                     'hover:shadow-lg',
@@ -121,15 +151,24 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
                   <div className="p-2 text-center text-sm md:block bg-[#E3E3E3] border-b border-black">
                     {formatDate(item.created_time)}
                   </div>
-                  <p className="p-4 text-semibold flex flex-wrap items-center justify-between">
+                  <p className="p-4 text-semibold flex flex-wrap md:flex-nowrap items-center justify-between">
                     <NotionRichText
                       items={item.properties.Name.title as any}
                       className="uppercase text-base"
                     />
                     <img
                       alt="preview"
-                      src={getFileURL(item.properties.Photo.files[0])}
-                      className="w-full h-full mt-2 md:w-24 md:h-24 md:mt-0"
+                      src={
+                        shouldReload === 'full'
+                          ? '/assets/neko-3.png'
+                          : getFileURL(item.properties.Photo.files[0])
+                      }
+                      className={classNames(
+                        'w-full h-full mt-2 md:w-24 md:h-24 md:mt-0 ml-0 md:ml-2',
+                        {
+                          'animate-pulse': shouldReload === 'full',
+                        },
+                      )}
                     />
                   </p>
                 </Link>

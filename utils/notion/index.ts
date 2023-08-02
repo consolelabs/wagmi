@@ -88,7 +88,6 @@ const NotionClient = {
   async getRandomSlug(page: string) {
     const data = await this.getComics(1)
     const maxID = Number(data.results[0].properties.CID.number)
-
     const curr = Number(split(page, '-')[0])
     const nextID = randomPageID(maxID, curr)
     const pageResp = await this._getByID(nextID)

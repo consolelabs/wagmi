@@ -6,11 +6,10 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const { page_number } = req.query
+    const { page_id } = req.query
 
-    const page_id = page_number as string
     const [randomResp, newestResp] = await Promise.all([
-      NotionClient.getRandomSlug(page_id),
+      NotionClient.getRandomSlug(page_id as string),
       NotionClient.getLatestComic(),
     ])
     res.status(200).json({ slug: randomResp, newestSlug: newestResp.pageID })

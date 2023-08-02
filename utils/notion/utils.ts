@@ -1,5 +1,6 @@
 import { FilesPropertyItemObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import { IComic } from './types'
+import differenceInMinutes from 'date-fns/differenceInMinutes'
 
 type FileType =
   | {
@@ -28,6 +29,27 @@ export function getFileURL(file: FileType) {
   }
 
   return '/assets/hug.png'
+}
+
+export function shouldRefreshPage(file: FileType) {
+  if (file.type === 'file') {
+    const diff = differenceInMinutes(
+      new Date(),
+      new Date(file.file.expiry_time),
+    )
+    if (diff < -30) {
+      // no need to refresh if it's not expired yet
+      return 'never'
+    }
+
+    if (diff >= 0) {
+      return 'full'
+    }
+
+    return 'partial'
+  }
+
+  return 'never'
 }
 
 export function randomPageID(maxID: number, currentPage: number) {
