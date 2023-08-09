@@ -86,7 +86,7 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
     <div className="relative">
       <Layout>
         <SEO />
-        <div className="mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto">
+        <div className="mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto overflow-hidden">
           <h1 className="relative z-20 text-3xl font-bold text-center font-[YanoneKaffeesatz-Bold]">
             All comics
           </h1>
@@ -131,7 +131,7 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
               <div
                 key={item.id}
                 className={classNames(
-                  'relative z-10 -mt-32 md:-mt-16 px-4 md:px-6 w-48 md:w-96 even:-ml-[12.2rem] md:even:-ml-[24.2rem]',
+                  'relative z-10 -mt-12 md:-mt-16 px-4 md:px-6 w-48 md:w-96 even:-ml-[12.2rem] md:even:-ml-[24.2rem]',
                   'before:absolute before:w-3 before:h-3 before:bg-black before:rounded-full before:border before:border-white',
                   'before:top-3 before:even:left-[calc(100%-4px)] before:odd:-left-[7px] z-20',
                   'after:absolute after:w-4 md:after:w-6 after:h-1 after:border-t after:border-dashed after:border-black',
