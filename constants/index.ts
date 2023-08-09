@@ -3,11 +3,11 @@ import { DISCORD_LINK, TWITTER_LINK, GITBOOK_LINK, TELEGRAM_LINK } from '~envs'
 export const PAGES = {
   HOME: {
     path: '/',
-    title: 'Mochi - The Web3 Discord Bot',
+    title: 'WAGMI with Mochi',
   },
   COMICS: {
     path: '/comics',
-    title: 'Comics',
+    title: 'Comic list',
   },
   ABOUT: {
     path: '/about',
