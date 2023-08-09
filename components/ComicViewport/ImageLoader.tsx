@@ -28,7 +28,6 @@ function ImageLoader({
         this.onerror?.(e)
         return
       }
-
       // append image
       ref.current?.replaceChildren(image)
     }
@@ -49,8 +48,8 @@ function ImageLoader({
   return (
     <div ref={ref} className={className}>
       <img
-        src="/assets/neko-4.png"
-        className="animate-pulse mx-auto mt-12 w-24"
+        src="/assets/neko-1.gif"
+        className="mx-auto mt-24 mb-12 w-24 h-24"
         alt=""
       />
     </div>

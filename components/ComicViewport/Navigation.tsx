@@ -64,10 +64,18 @@ function Navigation({
             key="prev"
             className="relative z-10 group flex flex-col items-center justify-center"
           >
-            <p className="text-center">All comics</p>
+            <p className="text-center">HOWDY, UNIVERSE!</p>
             <Image
               src="/assets/neko-0.png"
               alt="all commic"
+              className="block group-hover:hidden"
+              width={35}
+              height={35}
+            />
+            <Image
+              src="/assets/neko-0.gif"
+              alt="all commic"
+              className="hidden group-hover:block"
               width={35}
               height={35}
             />
@@ -76,10 +84,13 @@ function Navigation({
               alt="all commic"
               width={195}
               height={72}
-              className={classNames('absolute scale-110 group-hover:block', {
-                hidden: router.asPath !== '/comics',
-                block: router.asPath === '/comics',
-              })}
+              className={classNames(
+                'absolute scale-110 opacity-0 md:opacity-100 group-hover:block',
+                {
+                  hidden: router.asPath !== '/comics',
+                  block: router.asPath === '/comics',
+                },
+              )}
             />
           </Link>
         </div>
@@ -98,7 +109,7 @@ function Navigation({
             <button
               type="button"
               key="random"
-              className="relative z-10 flex flex-col items-center justify-center cursor-pointer"
+              className="relative z-10 flex flex-col items-center justify-center cursor-pointer group"
               disabled={!nextSlug}
               onClick={() => {
                 router.push(`/comics/${nextSlug}`)
@@ -108,6 +119,14 @@ function Navigation({
               <Image
                 src="/assets/neko-1.png"
                 alt="all commic"
+                className="block group-hover:hidden"
+                width={35}
+                height={35}
+              />
+              <Image
+                src="/assets/neko-1.gif"
+                alt="all commic"
+                className="hidden group-hover:block"
                 width={35}
                 height={35}
               />
@@ -127,10 +146,13 @@ function Navigation({
               alt="all commic"
               width={195}
               height={72}
-              className={classNames('absolute scale-110 group-hover:block', {
-                hidden: isNewest || !router.asPath.includes('/comics/'),
-                block: !isNewest && router.asPath.includes('/comics/'),
-              })}
+              className={classNames(
+                'absolute opacity-0 md:opacity-100 scale-110 group-hover:block',
+                {
+                  hidden: isNewest || !router.asPath.includes('/comics/'),
+                  block: !isNewest && router.asPath.includes('/comics/'),
+                },
+              )}
             />
           </div>
         </div>
@@ -141,6 +163,14 @@ function Navigation({
               <Image
                 src="/assets/neko-2.png"
                 alt="all commic"
+                className="block group-hover:hidden"
+                width={35}
+                height={35}
+              />
+              <Image
+                src="/assets/neko-2.gif"
+                alt="all commic"
+                className="hidden group-hover:block"
                 width={35}
                 height={35}
               />
@@ -149,10 +179,13 @@ function Navigation({
                 alt="all commic"
                 width={195}
                 height={72}
-                className={classNames('absolute scale-110 group-hover:block', {
-                  hidden: !isNewest,
-                  block: isNewest,
-                })}
+                className={classNames(
+                  'absolute opacity-0 md:opacity-100 scale-110 group-hover:block',
+                  {
+                    hidden: !isNewest,
+                    block: isNewest,
+                  },
+                )}
               />
             </>
           </NavLink>
