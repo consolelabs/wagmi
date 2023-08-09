@@ -57,7 +57,7 @@ function Navigation({
 
   return (
     <div className="sticky top-0 mt-4 border-b border-dashboard-gray-4 p-4 md:p-6 z-10 bg-white-pure">
-      <div className="max-w-2xl mx-auto flex items-center justify-between space-x-2">
+      <div className="max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <div className="w-1/3">
           <Link
             href="/comics"

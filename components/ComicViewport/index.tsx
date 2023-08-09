@@ -47,7 +47,7 @@ function ComicViewport({
     <div className="relative z-40 w-full m-auto" key={data.id}>
       <Navigation prevID={prevID} nextID={nextID} maxID={maxID} key={data.id} />
 
-      <div className="relative max-w-2xl mx-auto">
+      <div className="relative max-w-4xl mx-auto">
         <div className="text-2xl flex items-center justify-center mt-6 space-x-2 uppercase">
           <span className="hidden text-base md:block">
             {formatDate(data.created_time)}

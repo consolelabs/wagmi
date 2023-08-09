@@ -27,7 +27,7 @@ export const Footer = () => (
         <Icon icon="simple-icons:gitbook" className="w-4 h-4 text-black" />
       </a>
     </div>
-    <div className="h-1 border-b border-dashboard-gray-3 my-6 max-w-2xl m-auto" />
+    <div className="h-1 border-b border-dashboard-gray-3 my-6 max-w-4xl m-auto" />
     <div className="space-y-6">
       <div className="font-[YanoneKaffeesatz-Bold] text-2xl">
         Level up your community. For Free ✨

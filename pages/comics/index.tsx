@@ -87,7 +87,7 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
       <Layout>
         <SEO />
         <Navigation />
-        <div className="mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-2xl mx-auto">
+        <div className="mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto">
           <h1 className="relative z-20 text-3xl font-bold text-center font-[YanoneKaffeesatz-Bold]">
             All comics
           </h1>
