@@ -1,5 +1,5 @@
-import { Layout } from "~app/layout";
-import { SEO } from "~app/layout/seo";
+import { Layout } from '~components/layout'
+import { SEO } from '~components/layout/seo'
 
 export default function NotFoundPage() {
   return (
@@ -13,5 +13,5 @@ export default function NotFoundPage() {
         </h2>
       </div>
     </Layout>
-  );
+  )
 }

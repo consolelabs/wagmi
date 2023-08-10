@@ -1,5 +1,5 @@
-import { Layout } from '~app/layout'
-import { SEO } from '~app/layout/seo'
+import { Layout } from '~components/layout'
+import { SEO } from '~components/layout/seo'
 import { PAGES } from '~constants'
 
 export default function PrivacyPolicy() {

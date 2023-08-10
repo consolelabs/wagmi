@@ -1,100 +1,97 @@
 import { Icon } from '@iconify/react'
-import uniqBy from 'lodash/uniqBy'
-import { GetServerSideProps } from 'next'
+import classNames from 'classnames'
+import { GetStaticProps } from 'next'
 import Link from 'next/link'
-import QueryString from 'qs'
-import { useEffect, useState } from 'react'
-import { useInView } from 'react-intersection-observer'
-import useSWR from 'swr'
-import { Layout } from '~app/layout'
-import { SEO } from '~app/layout/seo'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Layout } from '~components/layout'
+
+import { SEO } from '~components/layout/seo'
+import Navigation from '~components/ComicViewport/Navigation'
 import NotionRichText from '~components/NotionRichtext'
 import { getNotionColor } from '~utils/color'
-import { fetcher } from '~utils/fetcher'
 import NotionClient from '~utils/notion'
-import { IComic, IComicRsp } from '~utils/notion/types'
+import { IComic } from '~utils/notion/types'
+import {
+  getFileURL,
+  getPageNamePlainText,
+  shouldRefreshPage,
+} from '~utils/notion/utils'
 import { formatDate } from '~utils/time'
+import slugify from 'slugify'
+import { fetcher } from '~utils/fetcher'
+import { sleep } from '@dwarvesf/react-utils'
 
-const ItemsPerPage = 20
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const pages: Array<IComic> = []
+  let cursor: string | undefined = undefined
+  while (true) {
+    const res = await NotionClient.getComics(100, cursor)
+    pages.push(...res.results)
+    if (!res.has_more) {
+      break
+    }
+    cursor = res.next_cursor || undefined
+  }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const tag = ctx.query.tag as string
-  const data = await NotionClient.getComics(
-    ItemsPerPage,
-    undefined,
-    'ascending',
-    tag,
-  )
+  // Get the paths we want to pre-render based on posts
 
   return {
     props: {
-      initialData: data,
-      tag: tag || '',
+      initialData: pages,
     },
+    revalidate: 10,
   }
 }
 
-export default function Page({
-  initialData,
-  tag,
-}: {
-  initialData: IComicRsp
-  tag?: string
-}) {
-  const [data, setData] = useState<IComic[]>(initialData.results)
-  const { ref, inView } = useInView()
+export default function Page({ initialData }: { initialData: IComic[] }) {
+  const router = useRouter()
 
-  const [hasMore, setHasMore] = useState<boolean>(initialData.has_more)
-  const [page, setPage] = useState<string | null | undefined>()
+  const tag = router.query.tag as string | undefined
 
-  const { data: resp, isLoading } = useSWR(
-    ['/api/comics', page, tag],
-    async () => {
-      const q = QueryString.stringify({
-        page_size: ItemsPerPage,
-        start_cursor: page,
-        direction: 'ascending',
-        tag,
+  const data = useMemo(() => {
+    // filter by tag
+    if (tag) {
+      return initialData.filter((item) => {
+        const tags = item.properties.Tags.multi_select.map((tag) => tag.name)
+        return tags.includes(tag as string)
       })
+    }
+    return initialData
+  }, [initialData, tag])
 
-      return fetcher.get<IComicRsp>(`/api/comics?${q}`)
-    },
-    {
-      fallbackData: initialData,
-    },
-  )
+  const shouldReload = shouldRefreshPage(data[0].properties.Photo.files[0])
 
   useEffect(() => {
-    setHasMore(resp?.has_more || false)
-    if (isLoading || !resp?.results) {
+    console.log(`[ShouldReload]`, shouldReload)
+
+    if (shouldReload === 'never') {
       return
     }
 
-    setData((prev) => {
-      if (prev) {
-        return uniqBy([...prev, ...resp.results], 'id')
-      }
-
-      return uniqBy(resp.results, 'id')
-    })
-  }, [isLoading, resp?.has_more, resp?.next_cursor, resp?.results])
-
-  useEffect(() => {
-    if (!isLoading && inView && hasMore) {
-      setPage(resp?.next_cursor)
-    }
-  }, [hasMore, inView, isLoading, resp?.next_cursor])
+    fetcher
+      .post(`/api/revalidate`, { path: router.asPath })
+      .then(() => sleep(500)) // wait a bit
+      .then(() => {
+        if (shouldReload === 'full') {
+          router.reload()
+        }
+      })
+      .catch((err) => {
+        console.error(`[ERROR]`, err)
+      })
+  }, [router, shouldReload])
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Layout>
         <SEO />
-        <div className="lg:mt-40 flex flex-col justify-between relative body-block px-6 md:px-12">
-          <h1 className="relative z-20 text-3xl font-bold text-center">
-            Comics Archive
+        <div className="mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto overflow-hidden">
+          <h1 className="relative z-20 text-3xl font-bold text-center font-[YanoneKaffeesatz-Bold]">
+            All comics
           </h1>
           {tag && (
-            <div className="relative z-20 mt-4 flex items-center">
+            <div className="relative z-20 mt-4 flex items-center mx-auto">
               <div className="mr-2">Filtered by</div>
               <Link
                 href={`/comics`}
@@ -121,66 +118,62 @@ export default function Page({
               </Link>
             </div>
           )}
-          <div className="relative space-y-2 mt-12 z-20">
+          <p className="text-center mt-8 text-3xl">
+            {new Date().getFullYear()}
+          </p>
+          <div
+            className={classNames(
+              'relative mt-4 z-20 pt-20 pb-8 max-w-full',
+              'before:absolute before:inset-0 before:z-0 border-l-2 border-black left-1/2 before:w-[1px]',
+            )}
+          >
             {data?.map((item) => (
-              <Link
+              <div
                 key={item.id}
-                href="/comics/[slug]"
-                as={`/comics/${item.properties.CID.number}`}
-                className="flex gap-x-2 items-center p-3 pr-4 w-full bg-white border border-mochi-50 rounded-lg hover:shadow hover:border-transparent"
+                className={classNames(
+                  'relative z-10 -mt-12 md:-mt-16 px-4 md:px-6 w-48 md:w-96 even:-ml-[12.2rem] md:even:-ml-[24.2rem]',
+                  'before:absolute before:w-3 before:h-3 before:bg-black before:rounded-full before:border before:border-white',
+                  'before:top-3 before:even:left-[calc(100%-4px)] before:odd:-left-[7px] z-20',
+                  'after:absolute after:w-4 md:after:w-6 after:h-1 after:border-t after:border-dashed after:border-black',
+                  'after:top-[18px] after:even:left-[calc(94%-5px)] md:after:even:left-[calc(94%-1px)] after:odd:-left-0 z-20',
+                )}
               >
-                <span className="text-semibold text-xs">
-                  {item.properties.CID.number}.
-                </span>
-                <p className="text-semibold flex-1">
-                  <NotionRichText items={item.properties.Name.title as any} />
-                </p>
-                <div className="flex items-center justify-end space-x-2">
-                  {item.properties.Tags.multi_select?.length > 0 && (
-                    <div className="flex items-center justify-center flex-wrap gap-2">
-                      {item.properties.Tags.multi_select.map((tg) => (
-                        <Link
-                          key={tg.id}
-                          href={`/comics?tag=${tg.name}`}
-                          className="border-none text-sm px-2 py-1 rounded-lg text-white flex items-center justify-center gap-1 hover:cursor-pointer"
-                          style={{ ...getNotionColor(tg.color) }}
-                        >
-                          <Icon
-                            icon="heroicons-tag-solid"
-                            className="w-3 h-3 text-white"
-                            style={{
-                              ...getNotionColor(tg.color),
-                              background: 'none',
-                            }}
-                          />
-                          <span className="font-normal">{tg.name}</span>
-                        </Link>
-                      ))}
-                    </div>
+                <Link
+                  href={`/comics/${item.properties.CID.number}-${slugify(
+                    getPageNamePlainText(item),
+                  )}`}
+                  className={classNames(
+                    'relative z-10 block border border-black rounded-lg overflow-hidden',
+                    'hover:shadow-lg',
                   )}
-                  <span className="hidden text-sm md:block">
+                >
+                  <div className="p-2 text-center text-sm md:block bg-[#E3E3E3] border-b border-black">
                     {formatDate(item.created_time)}
-                  </span>
-                </div>
-              </Link>
+                  </div>
+                  <p className="p-4 text-semibold flex flex-wrap md:flex-nowrap items-center justify-between">
+                    <NotionRichText
+                      items={item.properties.Name.title as any}
+                      className="uppercase text-base"
+                    />
+                    <img
+                      alt="preview"
+                      src={
+                        shouldReload === 'full'
+                          ? '/assets/neko-3.png'
+                          : getFileURL(item.properties.Photo.files[0])
+                      }
+                      className={classNames(
+                        'w-full h-full mt-2 md:w-24 md:h-24 md:mt-0 ml-0 md:ml-2',
+                        {
+                          'animate-pulse': shouldReload === 'full',
+                        },
+                      )}
+                    />
+                  </p>
+                </Link>
+              </div>
             ))}
           </div>
-
-          {!!hasMore && !!resp?.next_cursor && (
-            <div ref={ref} className="mt-4">
-              <div className="flex gap-x-3 items-start p-3 pr-4 w-full bg-white rounded-lg shadow-full">
-                <div className="flex items-baseline w-6 h-6">
-                  <Icon
-                    icon="ei:spinner"
-                    className="flex-shrink-0 w-6 h-6 animate-spin"
-                  />
-                </div>
-                <span className="my-auto text-sm font-semibold break-all">
-                  Loading...
-                </span>
-              </div>
-            </div>
-          )}
         </div>
       </Layout>
     </div>

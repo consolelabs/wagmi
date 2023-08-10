@@ -3,6 +3,7 @@ import {
   NumberPropertyItemObjectResponse,
   QueryDatabaseResponse,
   PageObjectResponse,
+  CheckboxPropertyItemObjectResponse,
   MultiSelectPropertyItemObjectResponse,
   RichTextItemResponse,
 } from '@notionhq/client/build/src/api-endpoints'
@@ -14,6 +15,7 @@ export interface IComicRsp extends Omit<QueryDatabaseResponse, 'result'> {
 export interface IComic extends Omit<PageObjectResponse, 'properties'> {
   properties: {
     CID: NumberPropertyItemObjectResponse
+    ShowName: CheckboxPropertyItemObjectResponse
     Photo: FilesPropertyItemObjectResponse
     Name: {
       type: 'title'

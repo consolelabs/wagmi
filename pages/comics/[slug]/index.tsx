@@ -1,21 +1,21 @@
-import { GetServerSideProps } from 'next'
-import Image from 'next/image'
-import { Layout } from '~app/layout'
-import { SEO } from '~app/layout/seo'
+import { GetStaticProps } from 'next'
+import slugify from 'slugify'
+import { Layout } from '~components/layout'
+import { SEO } from '~components/layout/seo'
 import ComicViewport from '~components/ComicViewport'
-import { RingsBackground } from '~components/RingsBackground'
-import NotionClient, { getFileURL } from '~utils/notion'
+import NotionClient from '~utils/notion'
 import { IComic } from '~utils/notion/types'
-import { heroBg } from '~utils/image'
+import { getPageNamePlainText } from '~utils/notion/utils'
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   try {
-    const data = await NotionClient.getComicByID(ctx.query.slug as string)
+    const data = await NotionClient.getComicByID(ctx.params?.slug as string)
 
     return {
       props: {
         ...data,
       },
+      revalidate: 10,
     }
   } catch (err) {
     console.error(err)
@@ -26,25 +26,53 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
+export async function getStaticPaths() {
+  const pages: Array<IComic> = []
+  let cursor: string | undefined = undefined
+  while (true) {
+    const res = await NotionClient.getComics(50, cursor)
+    pages.push(...res.results)
+    if (!res.has_more) {
+      break
+    }
+    cursor = res.next_cursor || undefined
+  }
+
+  // Get the paths we want to pre-render based on posts
+  const paths = pages.map((page) => ({
+    params: {
+      slug: [
+        page.properties.CID.number,
+        slugify(getPageNamePlainText(page)),
+      ].join('-'),
+    },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: 'blocking' } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: 'blocking' }
+}
+
 export default function IndexPage({
   data,
-  nextRandomID,
+  maxID,
   prevID,
   nextID,
 }: {
   data: IComic
-  nextRandomID: number
+  maxID: number
   prevID: string
   nextID?: string | null
 }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Layout>
         <SEO />
-        <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block px-6 md:px-12">
+        <div className="relative w-screen">
           <ComicViewport
             data={data}
-            nextRandomID={nextRandomID}
+            maxID={maxID}
             prevID={prevID}
             nextID={nextID}
           />
