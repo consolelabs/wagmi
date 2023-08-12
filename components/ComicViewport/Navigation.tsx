@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, memo, useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { fetcher } from '~utils/fetcher'
 
 const NavLink = (props: { href?: string; children: ReactNode }) => {
@@ -40,45 +41,39 @@ function Navigation({
 }) {
   const router = useRouter()
   const { slug = '' } = router.query
-  const [nextSlug, setNextSlug] = useState<string | null>(null)
-  const [newestSlug, setNewestSlug] = useState<string | null>(null)
-  const isNewest = `/comics/${newestSlug}` === router.asPath
-
-  useEffect(() => {
-    fetcher
-      .get<{ slug: string; newestSlug: string }>(`/api/random?page_id=${slug}`)
-      .then(async (res) => {
-        if (res) {
-          setNextSlug(res.slug)
-          setNewestSlug(res.newestSlug)
-        }
-      })
-  }, [slug])
+  const { data } = useSWR(['/api/random?page_id=', slug], () =>
+    fetcher.get<{ slug: string; newestSlug: string; oldestSlug: string }>(
+      `/api/random?page_id=${slug}`,
+    ),
+  )
+  const isNewest = `/comics/${data?.newestSlug}` === router.asPath
 
   return (
     <div className="sticky top-0 mt-4 border-b border-dashboard-gray-4 p-4 md:p-6 z-10 bg-white-pure">
       <div className="max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <div className="w-1/3">
           <Link
-            href="/comics"
-            key="prev"
+            href={data?.oldestSlug ? `/comics/${data?.oldestSlug}` : '/comics'}
+            key="HOWDY, UNIVERSE!"
             className="relative z-10 group flex flex-col items-center justify-center"
           >
             <p className="text-center">HOWDY, UNIVERSE!</p>
-            <Image
-              src="/assets/neko-0.png"
-              alt="all commic"
-              className="block group-hover:hidden"
-              width={35}
-              height={35}
-            />
-            <Image
-              src="/assets/neko-0.gif"
-              alt="all commic"
-              className="hidden group-hover:block"
-              width={35}
-              height={35}
-            />
+            <div className="relative h-[35px] w-[35px]">
+              <Image
+                src="/assets/neko-0.png"
+                alt="all commic"
+                className="opacity-100 group-hover:opacity-0 absolute inset-0"
+                width={35}
+                height={35}
+              />
+              <Image
+                src="/assets/neko-0.gif"
+                alt="all commic"
+                className="opacity-0 group-hover:opacity-100 absolute inset-0"
+                width={35}
+                height={35}
+              />
+            </div>
             <Image
               src="/assets/select-circle.svg"
               alt="all commic"
@@ -110,26 +105,28 @@ function Navigation({
               type="button"
               key="random"
               className="relative z-10 flex flex-col items-center justify-center cursor-pointer group"
-              disabled={!nextSlug}
+              disabled={!data?.slug}
               onClick={() => {
-                router.push(`/comics/${nextSlug}`)
+                router.push(`/comics/${data?.slug}`)
               }}
             >
               <p>RANDOM</p>
-              <Image
-                src="/assets/neko-1.png"
-                alt="all commic"
-                className="block group-hover:hidden"
-                width={35}
-                height={35}
-              />
-              <Image
-                src="/assets/neko-1.gif"
-                alt="all commic"
-                className="hidden group-hover:block"
-                width={35}
-                height={35}
-              />
+              <div className="relative h-[35px] w-[35px]">
+                <Image
+                  src="/assets/neko-1.png"
+                  alt="all commic"
+                  className="opacity-100 group-hover:opacity-0 absolute inset-0"
+                  width={35}
+                  height={35}
+                />
+                <Image
+                  src="/assets/neko-1.gif"
+                  alt="all commic"
+                  className="opacity-0 group-hover:opacity-100 absolute inset-0"
+                  width={35}
+                  height={35}
+                />
+              </div>
             </button>
 
             <NavLink key="next" href={nextID ? `/comics/${nextID}` : undefined}>
@@ -157,23 +154,27 @@ function Navigation({
           </div>
         </div>
         <div className="w-1/3">
-          <NavLink href={newestSlug ? `/comics/${newestSlug}` : undefined}>
+          <NavLink
+            href={data?.newestSlug ? `/comics/${data?.newestSlug}` : undefined}
+          >
             <>
               <p className="text-center">Fresh out of the oven</p>
-              <Image
-                src="/assets/neko-2.png"
-                alt="all commic"
-                className="block group-hover:hidden"
-                width={35}
-                height={35}
-              />
-              <Image
-                src="/assets/neko-2.gif"
-                alt="all commic"
-                className="hidden group-hover:block"
-                width={35}
-                height={35}
-              />
+              <div className="relative h-[35px] w-[35px]">
+                <Image
+                  src="/assets/neko-2.png"
+                  alt="all commic"
+                  className="opacity-100 group-hover:opacity-0 absolute inset-0"
+                  width={35}
+                  height={35}
+                />
+                <Image
+                  src="/assets/neko-2.gif"
+                  alt="all commic"
+                  className="opacity-0 group-hover:opacity-100 absolute inset-0"
+                  width={35}
+                  height={35}
+                />
+              </div>
               <Image
                 src="/assets/select-circle.svg"
                 alt="all commic"

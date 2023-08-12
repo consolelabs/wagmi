@@ -1,6 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 import { CONFIG } from '~components/layout/seo'
-import { HOME_URL } from '~envs'
 
 class MyDocument extends Document {
   render(): JSX.Element {
@@ -30,7 +29,7 @@ class MyDocument extends Document {
           <meta name="application-name" content={CONFIG.title} />
           <script
             defer
-            data-domain={HOME_URL}
+            data-domain="wagmi.console.so"
             src="https://plausible.io/js/plausible.js"
           />
         </Head>

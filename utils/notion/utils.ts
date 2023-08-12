@@ -1,4 +1,3 @@
-import { FilesPropertyItemObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import { IComic } from './types'
 import differenceInMinutes from 'date-fns/differenceInMinutes'
 
@@ -65,4 +64,9 @@ export function getPageNamePlainText(page: IComic) {
   return page.properties.Name.title
     .map((title: any) => title.plain_text)
     .join(' ')
+}
+
+export function getSlug(page: IComic): string {
+  // @ts-ignore
+  return page.properties.Slug.formula.string
 }
