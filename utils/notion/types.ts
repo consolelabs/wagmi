@@ -6,6 +6,7 @@ import {
   CheckboxPropertyItemObjectResponse,
   MultiSelectPropertyItemObjectResponse,
   RichTextItemResponse,
+  FormulaPropertyItemObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints'
 
 export interface IComicRsp extends Omit<QueryDatabaseResponse, 'result'> {
@@ -23,5 +24,6 @@ export interface IComic extends Omit<PageObjectResponse, 'properties'> {
       id: string
     }
     Tags: MultiSelectPropertyItemObjectResponse
+    Slug: FormulaPropertyItemObjectResponse
   }
 }

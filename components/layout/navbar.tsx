@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import { SOCIAL_LINKS } from '~constants'
-import { Icon } from '@iconify/react'
 import classNames from 'classnames'
 
 const NavLink = (props: any) => {
@@ -38,7 +36,7 @@ export const Navbar = () => {
     <Fragment>
       <nav className="relative z-20 bg-transparent">
         <div className="flex gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
-          <Link className="flex gap-x-3 items-center" href="/comics">
+          <Link className="flex gap-x-3 items-center" href="/">
             <>
               <Image
                 src="/logo.svg"
@@ -64,26 +62,13 @@ export const Navbar = () => {
           />
           <div className="flex gap-4 items-center">
             follow us:
-            <a
-              href={SOCIAL_LINKS.TWITTER_LINK}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Icon icon="mdi:twitter" className="w-4 h-4 text-white" />
-            </a>
-            <a href={SOCIAL_LINKS.DISCORD} target="_blank" rel="noreferrer">
-              <Icon icon="ic:baseline-discord" className="w-4 h-4 text-white" />
-            </a>
-            <a href={SOCIAL_LINKS.TELEGRAM} target="_blank" rel="noreferrer">
-              <Icon
-                icon="ic:baseline-telegram"
-                className="w-4 h-4 text-white"
-              />
-            </a>
-            <a href={SOCIAL_LINKS.GITBOOK} target="_blank" rel="noreferrer">
-              <Icon
-                icon="simple-icons:gitbook"
-                className="w-4 h-4 text-white"
+            <a href="https://console.so/" target="_blank" rel="noreferrer">
+              <Image
+                src="/consolelab.svg"
+                height={64}
+                width={64}
+                alt="console lab logo sticker"
+                className="mx-0 h-4 w-full"
               />
             </a>
           </div>

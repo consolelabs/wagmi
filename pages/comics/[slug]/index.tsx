@@ -1,11 +1,10 @@
 import { GetStaticProps } from 'next'
-import slugify from 'slugify'
 import { Layout } from '~components/layout'
 import { SEO } from '~components/layout/seo'
 import ComicViewport from '~components/ComicViewport'
 import NotionClient from '~utils/notion'
 import { IComic } from '~utils/notion/types'
-import { getPageNamePlainText } from '~utils/notion/utils'
+import { getSlug } from '~utils/notion/utils'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   try {
@@ -41,10 +40,7 @@ export async function getStaticPaths() {
   // Get the paths we want to pre-render based on posts
   const paths = pages.map((page) => ({
     params: {
-      slug: [
-        page.properties.CID.number,
-        slugify(getPageNamePlainText(page)),
-      ].join('-'),
+      slug: getSlug(page),
     },
   }))
 

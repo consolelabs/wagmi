@@ -1,9 +1,7 @@
 import { Client } from '@notionhq/client'
 import { NOTION_DB_ID_WAGMI, NOTION_KEY } from '~envs'
 import { IComic, IComicRsp } from './types'
-import slugify from 'slugify'
-import { getPageNamePlainText, randomPageID } from './utils'
-import split from 'lodash/split'
+import { getSlug, randomPageID } from './utils'
 
 // Initializing a client
 const notion = new Client({
@@ -71,31 +69,31 @@ const NotionClient = {
     const prevID = data.results[0].properties.CID.number! - 1
     const prevPage = await this._getByID(Number(prevID))
 
-    const slug = slugify(getPageNamePlainText(prevPage.results[0] as IComic))
-    const currentSlug = [
-      data.results[0].properties.CID.number!,
-      slugify(getPageNamePlainText(data.results[0] as IComic)),
-    ].join('-')
+    const slug = getSlug(prevPage.results[0])
+    const currentSlug = getSlug(data.results[0])
 
     return {
       data: data.results[0] as IComic,
-      prevID: `${prevID}-${slug}`,
+      prevID: slug,
       nextID: null,
       maxID,
       pageID: currentSlug,
     }
   },
+  async getOldestComic() {
+    const page = await this._getByID(1)
+
+    return getSlug(page.results[0])
+  },
   async getRandomSlug(page: string) {
     const data = await this.getComics(1)
     const maxID = Number(data.results[0].properties.CID.number)
-    const curr = Number(split(page, '-')[0])
+    const curPage = await this._getBySlug(page)
+    const curr = (curPage.results[0] as IComic).properties.CID.number!
     const nextID = randomPageID(maxID, curr)
     const pageResp = await this._getByID(nextID)
 
-    return [
-      nextID,
-      slugify(getPageNamePlainText(pageResp.results[0] as IComic)),
-    ].join('-')
+    return getSlug(pageResp.results[0] as IComic)
   },
 
   _getByID(cid: number) {
@@ -124,33 +122,53 @@ const NotionClient = {
           },
         ],
       },
+    }) as Promise<IComicRsp>
+  },
+
+  _getBySlug(slug: string) {
+    return notion.databases.query({
+      database_id: NOTION_DB_ID_WAGMI!,
+      page_size: 1,
+      filter: {
+        and: [
+          {
+            property: 'Name',
+            title: {
+              is_not_empty: true,
+            },
+          },
+          {
+            property: 'Photo',
+            files: {
+              is_not_empty: true,
+            },
+          },
+          {
+            property: 'Slug',
+            formula: {
+              string: {
+                equals: slug,
+              },
+            },
+          },
+        ],
+      },
     })
   },
 
-  async getComicByID(id: string) {
-    const idNumber = Number(split(id, '-')[0])
+  async getComicByID(slug: string) {
     const data = await this.getComics(1)
     const maxID = Number(data.results[0].properties.CID.number)
 
-    const [comicRsp, prevResp, nextResp] = await Promise.all([
-      this._getByID(Number(idNumber)),
-      idNumber - 1 > 0 ? this._getByID(Number(idNumber - 1)) : null,
-      idNumber + 1 <= maxID ? this._getByID(Number(idNumber + 1)) : null,
+    const comicRsp = (await this._getBySlug(slug)) as IComicRsp
+    const numberSlug = comicRsp.results[0].properties.CID.number!
+    const [prevResp, nextResp] = await Promise.all([
+      numberSlug - 1 > 0 ? this._getByID(Number(numberSlug - 1)) : null,
+      numberSlug + 1 <= maxID ? this._getByID(Number(numberSlug + 1)) : null,
     ])
 
-    const prevSlug = prevResp
-      ? [
-          idNumber - 1,
-          slugify(getPageNamePlainText(prevResp.results[0] as IComic)),
-        ].join('-')
-      : null
-
-    const nextSlug = nextResp
-      ? [
-          idNumber + 1,
-          slugify(getPageNamePlainText(nextResp.results[0] as IComic)),
-        ].join('-')
-      : null
+    const prevSlug = prevResp ? getSlug(prevResp.results[0] as IComic) : null
+    const nextSlug = nextResp ? getSlug(nextResp.results[0] as IComic) : null
 
     return {
       data: comicRsp!.results[0] as IComic,

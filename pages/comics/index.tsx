@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Layout } from '~components/layout'
 
 import { SEO } from '~components/layout/seo'

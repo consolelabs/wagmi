@@ -8,11 +8,16 @@ export default async function handler(
   try {
     const { page_id } = req.query
 
-    const [randomResp, newestResp] = await Promise.all([
+    const [randomResp, newestResp, oldestSlug] = await Promise.all([
       NotionClient.getRandomSlug(page_id as string),
       NotionClient.getLatestComic(),
+      NotionClient.getOldestComic(),
     ])
-    res.status(200).json({ slug: randomResp, newestSlug: newestResp.pageID })
+    res.status(200).json({
+      slug: randomResp,
+      oldestSlug: oldestSlug,
+      newestSlug: newestResp.pageID,
+    })
   } catch (err) {
     console.error(err)
     res.status(400).json({ error: 'internal server error' })

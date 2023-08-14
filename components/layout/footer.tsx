@@ -14,17 +14,14 @@ export const Footer = () => (
     />
     <div className="flex gap-4 items-center text-base uppercase justify-center">
       follow us:
-      <a href={SOCIAL_LINKS.TWITTER_LINK} target="_blank" rel="noreferrer">
-        <Icon icon="mdi:twitter" className="w-4 h-4 text-black" />
-      </a>
-      <a href={SOCIAL_LINKS.DISCORD} target="_blank" rel="noreferrer">
-        <Icon icon="ic:baseline-discord" className="w-4 h-4 text-black" />
-      </a>
-      <a href={SOCIAL_LINKS.TELEGRAM} target="_blank" rel="noreferrer">
-        <Icon icon="ic:baseline-telegram" className="w-4 h-4 text-black" />
-      </a>
-      <a href={SOCIAL_LINKS.GITBOOK} target="_blank" rel="noreferrer">
-        <Icon icon="simple-icons:gitbook" className="w-4 h-4 text-black" />
+      <a href="https://console.so/" target="_blank" rel="noreferrer">
+        <Image
+          src="/consolelab.svg"
+          height={64}
+          width={64}
+          alt="console lab logo sticker"
+          className="mx-0 h-4 w-full"
+        />
       </a>
     </div>
     <div className="h-1 border-b border-dashboard-gray-3 my-6 max-w-4xl m-auto" />
@@ -39,7 +36,7 @@ export const Footer = () => (
           </button>
         </Link>
       </div>
-      <div>Copyright © 2022+ MochiBot, All rights reserved</div>
+      <div>Copyright © 2022+ Console Labs, All rights reserved</div>
     </div>
   </footer>
 )
