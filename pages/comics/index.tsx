@@ -3,48 +3,29 @@ import classNames from 'classnames'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Layout } from '~components/layout'
-
-import { SEO } from '~components/layout/seo'
-import Navigation from '~components/ComicViewport/Navigation'
-import NotionRichText from '~components/NotionRichtext'
+import { CONFIG, SEO } from '~components/layout/seo'
 import { getNotionColor } from '~utils/color'
-import NotionClient from '~utils/notion'
-import { IComic } from '~utils/notion/types'
-import {
-  getFileURL,
-  getPageNamePlainText,
-  shouldRefreshPage,
-} from '~utils/notion/utils'
 import { formatDate } from '~utils/time'
-import slugify from 'slugify'
-import { fetcher } from '~utils/fetcher'
-import { sleep } from '@dwarvesf/react-utils'
+import { IComicMetadata, getAllCommics } from '~utils/mdx'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const pages: Array<IComic> = []
-  let cursor: string | undefined = undefined
-  while (true) {
-    const res = await NotionClient.getComics(100, cursor)
-    pages.push(...res.results)
-    if (!res.has_more) {
-      break
-    }
-    cursor = res.next_cursor || undefined
-  }
-
-  // Get the paths we want to pre-render based on posts
+  const data = await getAllCommics()
 
   return {
     props: {
-      initialData: pages,
+      data: data.map((item) => item.data),
     },
     revalidate: 10,
   }
 }
 
-export default function Page({ initialData }: { initialData: IComic[] }) {
+export default function Page({
+  data: initialData,
+}: {
+  data: IComicMetadata[]
+}) {
   const router = useRouter()
 
   const tag = router.query.tag as string | undefined
@@ -53,40 +34,17 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
     // filter by tag
     if (tag) {
       return initialData.filter((item) => {
-        const tags = item.properties.Tags.multi_select.map((tag) => tag.name)
-        return tags.includes(tag as string)
+        return item.tags.includes(tag as string)
       })
     }
     return initialData
   }, [initialData, tag])
 
-  const shouldReload = shouldRefreshPage(data[0].properties.Photo.files[0])
-
-  useEffect(() => {
-    console.log(`[ShouldReload]`, shouldReload)
-
-    if (shouldReload === 'never') {
-      return
-    }
-
-    fetcher
-      .post(`/api/revalidate`, { path: router.asPath })
-      .then(() => sleep(500)) // wait a bit
-      .then(() => {
-        if (shouldReload === 'full') {
-          router.reload()
-        }
-      })
-      .catch((err) => {
-        console.error(`[ERROR]`, err)
-      })
-  }, [router, shouldReload])
-
   return (
     <div className="relative">
       <Layout>
-        <SEO />
-        <div className="mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto overflow-hidden">
+        <SEO title={['Comic list', CONFIG.title].join(' - ')} />
+        <div className="mt-24 md:mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto overflow-hidden">
           <h1 className="relative z-20 text-3xl font-bold text-center font-[YanoneKaffeesatz-Bold]">
             All comics
           </h1>
@@ -129,7 +87,7 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
           >
             {data?.map((item) => (
               <div
-                key={item.id}
+                key={item.slug}
                 className={classNames(
                   'relative z-10 -mt-12 md:-mt-16 px-4 md:px-6 w-48 md:w-96 even:-ml-[12.2rem] md:even:-ml-[24.2rem]',
                   'before:absolute before:w-3 before:h-3 before:bg-black before:rounded-full before:border before:border-white',
@@ -139,37 +97,25 @@ export default function Page({ initialData }: { initialData: IComic[] }) {
                 )}
               >
                 <Link
-                  href={`/comics/${item.properties.CID.number}-${slugify(
-                    getPageNamePlainText(item),
-                  )}`}
+                  href={item.slug}
                   className={classNames(
                     'relative z-10 block border border-black rounded-lg overflow-hidden',
                     'hover:shadow-lg',
                   )}
                 >
                   <div className="p-2 text-center text-sm md:block bg-[#E3E3E3] border-b border-black">
-                    {formatDate(item.created_time)}
+                    {formatDate(item.date)}
                   </div>
-                  <p className="p-4 text-semibold flex flex-wrap md:flex-nowrap items-center justify-between">
-                    <NotionRichText
-                      items={item.properties.Name.title as any}
-                      className="uppercase text-base"
-                    />
-                    <img
-                      alt="preview"
-                      src={
-                        shouldReload === 'full'
-                          ? '/assets/neko-3.png'
-                          : getFileURL(item.properties.Photo.files[0])
-                      }
-                      className={classNames(
-                        'w-full h-full mt-2 md:w-24 md:h-24 md:mt-0 ml-0 md:ml-2',
-                        {
-                          'animate-pulse': shouldReload === 'full',
-                        },
-                      )}
-                    />
-                  </p>
+                  <div className="p-4 text-semibold flex flex-wrap md:flex-nowrap items-center justify-between uppercase text-base">
+                    <p>{item.title}</p>
+                    <div className="w-full h-24 mt-2 md:w-24 md:mt-0 ml-0 md:ml-2 overflow-hidden">
+                      <img
+                        alt="preview"
+                        src={item.images[0]}
+                        className={classNames('w-full object-cover')}
+                      />
+                    </div>
+                  </div>
                 </Link>
               </div>
             ))}

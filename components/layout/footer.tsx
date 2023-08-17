@@ -1,42 +1,30 @@
 import Image from 'next/image'
-import { SOCIAL_LINKS } from '~constants'
-import { Icon } from '@iconify/react'
-import Link from 'next/link'
+import { ConsolelabsBlack, Neko5 } from '~components/icons/images'
 
 export const Footer = () => (
-  <footer className="py-12 mt-auto text-center m-auto">
+  <footer className="pt-12 pb-32 md:pb-12 px-2 mt-auto text-center m-auto text-sm md:text-base">
+    <div className="h-1 border-b border-dashboard-gray-3 my-6 max-w-4xl m-auto" />
     <Image
-      src="/assets/hug.png"
+      src={Neko5}
       alt="hug sticker"
       width={107}
       height={107}
       className="m-auto"
     />
-    <div className="flex gap-4 items-center text-base uppercase justify-center">
-      follow us:
-      <a href="https://console.so/" target="_blank" rel="noreferrer">
+    <div className="space-x-1 flex flex-wrap items-center justify-center mt-2">
+      <div className="inline-flex items-center">
+        <span>Built with</span>
         <Image
-          src="/consolelab.svg"
-          height={64}
-          width={64}
-          alt="console lab logo sticker"
-          className="mx-0 h-4 w-full"
+          src={ConsolelabsBlack}
+          alt="consolelab logo"
+          width={16}
+          height={16}
+          className="mx-1"
         />
-      </a>
-    </div>
-    <div className="h-1 border-b border-dashboard-gray-3 my-6 max-w-4xl m-auto" />
-    <div className="space-y-6">
-      <div className="font-[YanoneKaffeesatz-Bold] text-2xl">
-        Level up your community. For Free ✨
+        <span>Console Labs,</span>
       </div>
-      <div>
-        <Link href="https://mochi.gg/">
-          <button className="border-2 border-black border-b-4 rounded-xl py-2 px-4">
-            Learn more
-          </button>
-        </Link>
-      </div>
-      <div>Copyright © 2022+ Console Labs, All rights reserved</div>
+      <div>the comic for investors who want to make the big bucks.</div>
     </div>
+    <div>Copyright © 2023 Console Labs, All rights reserved</div>
   </footer>
 )

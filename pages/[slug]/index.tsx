@@ -1,21 +1,29 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { Layout } from '~components/layout'
 import { CONFIG, SEO } from '~components/layout/seo'
 import ComicViewport from '~components/ComicViewport'
+import { IComicMetadata, getFileBySlug, getFilePaths } from '~utils/mdx'
 
-import { IComicMetadata, getNewestFile } from '~utils/mdx'
-
-export const getStaticProps: GetServerSideProps = async (ctx) => {
-  const comicData = await getNewestFile()
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const comicData = await getFileBySlug(params?.slug as string)
   return {
-    props: { ...comicData },
-    revalidate: 10,
+    props: comicData,
+  }
+}
+
+export const getStaticPaths = async () => {
+  const { pathsWithoutID } = getFilePaths()
+
+  return {
+    paths: pathsWithoutID.map((slug) => ({ params: { slug } })),
+    fallback: false,
   }
 }
 
 export default function IndexPage({
   data,
   prevPage,
+  nextPage,
 }: {
   data: IComicMetadata
   maxID: number
@@ -29,9 +37,10 @@ export default function IndexPage({
           title={data.title}
           description={data.description}
           image={data.images[0]}
+          url={`${CONFIG.url}/${data.slug}`}
         />
         <div className="relative w-screen z-10 mt-20 md:mt-0">
-          <ComicViewport data={data} prevID={prevPage} />
+          <ComicViewport data={data} prevID={prevPage} nextID={nextPage} />
         </div>
       </Layout>
     </div>

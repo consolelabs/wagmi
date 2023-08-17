@@ -2,6 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import classNames from 'classnames'
+import { useRouter } from 'next/router'
+import { ConsolelabsWhite, Neko4 } from '~components/icons/images'
 
 const NavLink = (props: any) => {
   return (
@@ -17,59 +19,73 @@ const NavLink = (props: any) => {
   )
 }
 
-const NavLinks = ({ className }: { className: string }) => (
+const NavLinks = ({
+  className,
+  pathname,
+}: {
+  className: string
+  pathname: string
+}) => (
   <div
     className={classNames([
       'flex items-center justify-end space-x-2',
       className,
     ])}
   >
-    <NavLink href="/comics" className="text-mochi-500">
+    <NavLink
+      href="/comics"
+      className={classNames({ 'text-mochi-500': pathname === '/comics' })}
+    >
       Comic List
     </NavLink>
-    <NavLink href="/about">About</NavLink>
+    <NavLink
+      href="/about"
+      className={classNames({ 'text-mochi-500': pathname === '/about' })}
+    >
+      About
+    </NavLink>
   </div>
 )
 
 export const Navbar = () => {
+  const { asPath } = useRouter()
+
   return (
     <Fragment>
-      <nav className="relative z-20 bg-transparent">
-        <div className="flex gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
-          <Link className="flex gap-x-3 items-center" href="/">
-            <>
-              <Image
-                src="/logo.svg"
-                alt="Logo"
-                width={143}
-                height={24}
-                className="block"
-              />
-            </>
+      <nav className="z-50 fixed md:relative top-0 left-0 right-0 bg-white-pure">
+        <div className="flex gap-y-5 items-center py-3 md:py-5 px-6 mx-auto max-w-7xl md:px-12 shadow-md md:shadow-none">
+          <Link className="font-[YanoneKaffeesatz-Bold] text-3xl" href="/">
+            WAGMI
           </Link>
-          <NavLinks className="flex-1" />
+          <NavLinks className="flex-1" pathname={asPath} />
         </div>
-        <div className="bg-black font-[YanoneKaffeesatz-Bold] text-lg text-white uppercase flex flex-col md:flex-row items-center justify-center h-auto md:h-10">
+        <div className="bg-black hidden md:flex font-[YanoneKaffeesatz-Bold] text-lg text-white uppercase flex-col md:flex-row items-center justify-center h-auto md:h-10">
           <div className="">
             A webcomic so money-related, it&apos;ll make you cry
           </div>
           <Image
-            src="/assets/neko-4.png"
+            src={Neko4}
             height={72}
             width={72}
             alt="cry sticker"
             className="mx-0 md:mx-6 h-12 w-12 md:h-[72px] md:w-[72px]"
           />
-          <div className="flex gap-4 items-center">
-            follow us:
-            <a href="https://console.so/" target="_blank" rel="noreferrer">
+          <div className="inline-flex items-center">
+            brought to the screen by
+            <a
+              href="https://console.so/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center"
+            >
               <Image
-                src="/consolelab.svg"
-                height={64}
-                width={64}
+                src={ConsolelabsWhite}
+                height={18}
+                width={18}
                 alt="console lab logo sticker"
-                className="mx-0 h-4 w-full"
+                className="mx-1"
               />
+              <span>console labs</span>
             </a>
           </div>
         </div>
