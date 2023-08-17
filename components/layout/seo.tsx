@@ -17,7 +17,7 @@ export const CONFIG = {
   description:
     'WAGMI by Console Labs - A collection of tips, tricks, and funny stories to help you become master of personal finance',
   url: HOME_URL,
-  image: `${HOME_URL}/thumbnail.png`,
+  image: `/thumbnail.png`,
 }
 
 export const SEO = ({
