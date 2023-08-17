@@ -59,7 +59,7 @@ export const Navbar = () => {
           </Link>
           <NavLinks className="flex-1" pathname={asPath} />
         </div>
-        <div className="bg-black hidden md:flex font-[YanoneKaffeesatz-Bold] text-lg text-white uppercase flex-col md:flex-row items-center justify-center h-auto md:h-10">
+        <div className="bg-black hidden md:flex font-[YanoneKaffeesatz-Bold] text-lg text-white uppercase flex-col md:flex-row items-center justify-center h-auto md:h-10 tracking-widest">
           <div className="">
             A webcomic so money-related, it&apos;ll make you cry
           </div>
