@@ -26,13 +26,13 @@ export const SEO = ({
   description = CONFIG.description,
   url = HOME_URL,
   image,
-  imgHeight = '512',
-  imgWidth = '512',
-}: Props) => (
+} // imgHeight = '128',
+// imgWidth = '128',
+: Props) => (
   <Head>
     <title>{title + (tailTitle ? ` — ${CONFIG.title}` : '')}</title>
 
-    <meta property="og:site_name" content={title} />
+    <meta property="og:site_name" content="WAGMI comics by Console" />
     <meta name="title" content={title} />
     <meta name="description" content={description} />
 
@@ -41,8 +41,8 @@ export const SEO = ({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image || CONFIG.image} />
-    <meta property="og:image:height" content={imgHeight} />
-    <meta property="og:image:width" content={imgWidth} />
+    {/* <meta property="og:image:height" content={imgHeight} /> */}
+    {/* <meta property="og:image:width" content={imgWidth} /> */}
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={url} />
