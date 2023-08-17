@@ -8,7 +8,7 @@ export default function AboutPage() {
     <Layout>
       <SEO
         title={PAGES.ABOUT.title}
-        description="A webcomic so money-related, it'll make you cry"
+        description="Indie financial webcomic to get through life-bonkers"
       />
       <h1 className="font-[YanoneKaffeesatz-Bold] text-center pt-24 text-5xl">
         ABOUT
