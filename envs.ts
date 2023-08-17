@@ -12,5 +12,8 @@ export const GITBOOK_LINK =
   'https://mochibot.gitbook.io/mochi-bot/introduction/about-mochi-bot'
 export const TELEGRAM_LINK = process.env.TELEGRAM_LINK || ''
 
-export const MOCHI_HOME_URL =
-  process.env.NEXT_PUBLIC_HOME_URL || 'https://mochi.gg'
+export const HOME_URL =
+  process.env.NEXT_PUBLIC_HOME_URL || 'https://wagmi.console.so'
+
+export const CONSOLE_LABS_HOME_URL =
+  process.env.NEXT_PUBLIC_HOME_URL || 'https://console.so'

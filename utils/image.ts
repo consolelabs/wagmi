@@ -1,7 +1,0 @@
-export { default as heroBg } from '../public/hero-bg.png'
-export { default as rocket } from '../public/rocket.png'
-export { default as diagBg } from '../public/diag.png'
-export { default as mochiTextCircle } from '../public/mochi-text-circle.png'
-export { default as iconContainer } from '../public/icon-container.png'
-export { default as rings } from '../public/rings.png'
-export { default as logo } from '../public/logo.png'

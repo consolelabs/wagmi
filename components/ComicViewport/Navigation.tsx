@@ -2,8 +2,18 @@ import classNames from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactNode, memo, useEffect, useState } from 'react'
+import { ReactNode, memo } from 'react'
 import useSWR from 'swr'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Neko0,
+  Neko0Gif,
+  Neko1,
+  Neko1Gif,
+  Neko2,
+  Neko2Gif,
+} from '~components/icons/images'
 import { fetcher } from '~utils/fetcher'
 
 const NavLink = (props: { href?: string; children: ReactNode }) => {
@@ -33,7 +43,7 @@ const NavLink = (props: { href?: string; children: ReactNode }) => {
 
 function Navigation({
   prevID,
-  nextID, // maxID,
+  nextID,
 }: {
   prevID?: string
   nextID?: string | null
@@ -46,28 +56,36 @@ function Navigation({
       `/api/random?page_id=${slug}`,
     ),
   )
-  const isNewest = `/comics/${data?.newestSlug}` === router.asPath
+  const isNewest = `/${data?.newestSlug}` === router.asPath
 
   return (
-    <div className="sticky top-0 mt-4 border-b border-dashboard-gray-4 p-4 md:p-6 z-10 bg-white-pure">
+    <div
+      className={classNames(
+        'border-dashboard-gray-3 p-4 md:p-6 z-10 bg-white-pure',
+        'fixed w-full bottom-0 left-0 right-0 border-t md:border-t-0', // mobile
+        'md:sticky md:top-0 mt-4 border-b-0 md:border-b', // desktop
+      )}
+    >
       <div className="max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <div className="w-1/3">
           <Link
-            href={data?.oldestSlug ? `/comics/${data?.oldestSlug}` : '/comics'}
+            href={
+              data?.oldestSlug ? `/${data?.oldestSlug}` : '/why-we-have-pay-tax'
+            }
             key="HOWDY, UNIVERSE!"
             className="relative z-10 group flex flex-col items-center justify-center"
           >
             <p className="text-center">HOWDY, UNIVERSE!</p>
             <div className="relative h-[35px] w-[35px]">
               <Image
-                src="/assets/neko-0.png"
+                src={Neko0}
                 alt="all commic"
                 className="opacity-100 group-hover:opacity-0 absolute inset-0"
                 width={35}
                 height={35}
               />
               <Image
-                src="/assets/neko-0.gif"
+                src={Neko0Gif}
                 alt="all commic"
                 className="opacity-0 group-hover:opacity-100 absolute inset-0"
                 width={35}
@@ -91,14 +109,9 @@ function Navigation({
         </div>
         <div className="w-1/3">
           <div className="relative group flex items-center justify-center">
-            <NavLink key="prev" href={prevID ? `/comics/${prevID}` : undefined}>
+            <NavLink key="prev" href={prevID ? `/${prevID}` : undefined}>
               <p className="opacity-0 select-none">Prev</p>
-              <Image
-                src="/assets/arrow-left.svg"
-                alt="prev"
-                width={30}
-                height={10}
-              />
+              <Image src={ArrowLeft} alt="prev" width={30} height={10} />
             </NavLink>
 
             <button
@@ -107,20 +120,20 @@ function Navigation({
               className="relative z-10 flex flex-col items-center justify-center cursor-pointer group"
               disabled={!data?.slug}
               onClick={() => {
-                router.push(`/comics/${data?.slug}`)
+                router.push(`/${data?.slug}`)
               }}
             >
               <p>RANDOM</p>
               <div className="relative h-[35px] w-[35px]">
                 <Image
-                  src="/assets/neko-1.png"
+                  src={Neko1}
                   alt="all commic"
                   className="opacity-100 group-hover:opacity-0 absolute inset-0"
                   width={35}
                   height={35}
                 />
                 <Image
-                  src="/assets/neko-1.gif"
+                  src={Neko1Gif}
                   alt="all commic"
                   className="opacity-0 group-hover:opacity-100 absolute inset-0"
                   width={35}
@@ -129,14 +142,9 @@ function Navigation({
               </div>
             </button>
 
-            <NavLink key="next" href={nextID ? `/comics/${nextID}` : undefined}>
+            <NavLink key="next" href={nextID ? `/${nextID}` : undefined}>
               <p className="opacity-0 select-none">Next</p>
-              <Image
-                src="/assets/arrow-right.svg"
-                alt="next"
-                width={30}
-                height={10}
-              />
+              <Image src={ArrowRight} alt="next" width={30} height={10} />
             </NavLink>
             <Image
               src="/assets/select-circle.svg"
@@ -144,31 +152,25 @@ function Navigation({
               width={195}
               height={72}
               className={classNames(
-                'absolute opacity-0 md:opacity-100 scale-110 group-hover:block',
-                {
-                  hidden: isNewest || !router.asPath.includes('/comics/'),
-                  block: !isNewest && router.asPath.includes('/comics/'),
-                },
+                'absolute opacity-0 md:opacity-100 scale-110 hidden group-hover:block',
               )}
             />
           </div>
         </div>
         <div className="w-1/3">
-          <NavLink
-            href={data?.newestSlug ? `/comics/${data?.newestSlug}` : undefined}
-          >
+          <NavLink href={data?.newestSlug ? `/${data?.newestSlug}` : undefined}>
             <>
               <p className="text-center">Fresh out of the oven</p>
               <div className="relative h-[35px] w-[35px]">
                 <Image
-                  src="/assets/neko-2.png"
+                  src={Neko2}
                   alt="all commic"
                   className="opacity-100 group-hover:opacity-0 absolute inset-0"
                   width={35}
                   height={35}
                 />
                 <Image
-                  src="/assets/neko-2.gif"
+                  src={Neko2Gif}
                   alt="all commic"
                   className="opacity-0 group-hover:opacity-100 absolute inset-0"
                   width={35}

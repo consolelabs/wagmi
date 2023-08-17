@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import NotionClient from '~utils/notion'
+import { getNewestFile, getOldestFile, getRandomFile } from '~utils/mdx'
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,15 +8,16 @@ export default async function handler(
   try {
     const { page_id } = req.query
 
-    const [randomResp, newestResp, oldestSlug] = await Promise.all([
-      NotionClient.getRandomSlug(page_id as string),
-      NotionClient.getLatestComic(),
-      NotionClient.getOldestComic(),
+    const [newestResp, oldestResp, randomResp] = await Promise.all([
+      getNewestFile(),
+      getOldestFile(),
+      getRandomFile(page_id as string),
     ])
+
     res.status(200).json({
-      slug: randomResp,
-      oldestSlug: oldestSlug,
-      newestSlug: newestResp.pageID,
+      slug: randomResp.data.slug,
+      oldestSlug: oldestResp.data.slug,
+      newestSlug: newestResp.data.slug,
     })
   } catch (err) {
     console.error(err)
