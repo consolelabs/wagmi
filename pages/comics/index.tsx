@@ -43,7 +43,10 @@ export default function Page({
   return (
     <div className="relative">
       <Layout>
-        <SEO title={['Comic list', CONFIG.title].join(' - ')} />
+        <SEO
+          title="Comic list"
+          description="Indie financial webcomic to get through life-bonkers"
+        />
         <div className="mt-24 md:mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto overflow-hidden">
           <h1 className="relative z-20 text-3xl font-bold text-center font-[YanoneKaffeesatz-Bold]">
             All comics
