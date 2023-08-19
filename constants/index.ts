@@ -31,7 +31,3 @@ export const SOCIAL_LINKS = {
   TOP_GG: 'https://top.gg/bot/963123183131709480/vote',
   DISCORBOTLIST: 'https://discordbotlist.com/bots/mochi-bot/upvote',
 }
-
-export const TOKEN_NAME = '$MOCHI'
-
-export const JP_NAME = 'もち'
