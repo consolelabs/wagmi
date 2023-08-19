@@ -6,7 +6,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const url = req.query.url as string
+  let url = req.query.url as string
+  if (process.env.NODE_ENV === 'production') {
+    url = `.${url}`
+  } else {
+    url = `./public${url}`
+  }
   if (!url) {
     res.status(404).end()
     return
