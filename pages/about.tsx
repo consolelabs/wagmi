@@ -9,11 +9,12 @@ export default function AboutPage() {
       <SEO
         title={PAGES.ABOUT.title}
         description="Indie financial webcomic to get through life-bonkers"
+        twitterCardLarge={false}
       />
-      <h1 className="font-[YanoneKaffeesatz-Bold] text-center pt-24 text-5xl">
+      <h1 className="pt-24 text-5xl text-center font-[YanoneKaffeesatz-Bold]">
         ABOUT
       </h1>
-      <div className="max-w-xl mx-auto mt-6 px-6">
+      <div className="px-6 mx-auto mt-6 max-w-xl">
         Welcome to WAGMI blog by Console team.
         <br />
         <br />
@@ -26,7 +27,7 @@ export default function AboutPage() {
         crazy ride!
         <br />
         <br />
-        <ul className="list-disc pl-4">
+        <ul className="pl-4 list-disc">
           <li>
             A better understanding will guides smart decisions for well-being
             and stability.

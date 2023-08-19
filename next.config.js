@@ -1,5 +1,1 @@
-module.exports = {
-  images: {
-    minimumCacheTTL: 3600,
-  },
-}
+module.exports = {}

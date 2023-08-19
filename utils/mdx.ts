@@ -68,6 +68,7 @@ export async function getFileBySlug(slug: string) {
   return {
     data: {
       ...data,
+      images: data.images.map((i: string) => `/api/image?url=./public${i}`),
       date: new Date(data.date).toISOString() || '',
       slug: removeIDFromSlug(actualSlug),
     } as IComicMetadata,

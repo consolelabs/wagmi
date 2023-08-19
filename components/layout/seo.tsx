@@ -10,6 +10,7 @@ interface Props {
   imgHeight?: string
   imgWidth?: string
   url?: string
+  twitterCardLarge?: boolean
 }
 
 export const CONFIG = {
@@ -28,6 +29,7 @@ export const SEO = ({
   description = CONFIG.description,
   url = HOME_URL,
   image,
+  twitterCardLarge = true,
 }: Props) => (
   <Head>
     <title>{title + (tailTitle ? ` — ${CONFIG.title}` : '')}</title>
@@ -42,7 +44,10 @@ export const SEO = ({
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image || CONFIG.image} />
 
-    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:card"
+      content={twitterCardLarge ? 'summary_large_card' : 'summary'}
+    />
     <meta property="twitter:domain" content={HOME_URL} />
     <meta property="twitter:url" content={url} />
     <meta property="twitter:title" content={title} />
