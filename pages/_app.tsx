@@ -37,7 +37,9 @@ export function handleCancelRendering(e: any) {
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
-    <main className={classNames('relative', BabyDoll.className)}>
+    <main
+      className={classNames('relative overflow-x-hidden', BabyDoll.className)}
+    >
       {getLayout(<Component {...pageProps} />)}
     </main>
   )

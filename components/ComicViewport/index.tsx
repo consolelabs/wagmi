@@ -20,11 +20,13 @@ function ComicViewport({
 
       <div className="relative max-w-4xl mx-auto z-0">
         <div className="text-2xl flex items-center justify-center mt-6 space-x-2 uppercase">
-          <span className="hidden text-base md:block">
-            {formatDate(data.date)}
-          </span>
+          <span className="text-xs md:text-sm">{formatDate(data.date)}</span>
           {data.tags.map((tg) => (
-            <Link key={tg} href={`/comics?tag=${tg}`}>
+            <Link
+              key={tg}
+              href={`/comics?tag=${tg}`}
+              className="inline-flex items-center justify-center"
+            >
               <Tag tag={tg} />
             </Link>
           ))}
