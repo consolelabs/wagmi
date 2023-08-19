@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   let url = req.query.url as string
   if (process.env.NODE_ENV === 'production') {
-    url = url.slice(1)
+    url = `./public${url}`
   } else {
     url = `./public${url}`
   }
