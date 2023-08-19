@@ -1,6 +1,5 @@
 import fs from 'fs'
 import { NextApiRequest, NextApiResponse } from 'next'
-import path from 'path'
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,8 +16,7 @@ export default async function handler(
     return
   }
   let ext = url.split('.').at(-1) ?? 'jpeg'
-  const filePath = path.join(process.cwd(), url)
-  const buffer = fs.readFileSync(filePath)
+  const buffer = fs.readFileSync(url)
   if (!['jpeg', 'png'].includes(ext.toLowerCase())) {
     ext = 'jpeg'
   }
