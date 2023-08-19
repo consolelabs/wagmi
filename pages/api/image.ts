@@ -17,7 +17,7 @@ export default async function handler(
     return
   }
   let ext = url.split('.').at(-1) ?? 'jpeg'
-  const filePath = path.resolve(process.cwd(), url)
+  const filePath = path.join(process.cwd(), url)
   const buffer = fs.readFileSync(filePath)
   if (!['jpeg', 'png'].includes(ext.toLowerCase())) {
     ext = 'jpeg'
