@@ -1,5 +1,3 @@
 module.exports = {
-  experimental: {
-    nftTracing: true,
-  },
+  output: 'standalone',
 }
