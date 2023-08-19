@@ -5,12 +5,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { Layout } from '~components/layout'
-import { CONFIG, SEO } from '~components/layout/seo'
+import { SEO } from '~components/layout/seo'
 import { getNotionColor } from '~utils/color'
 import { formatDate } from '~utils/time'
 import { IComicMetadata, getAllCommics } from '~utils/mdx'
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
   const data = await getAllCommics()
 
   return {
@@ -46,22 +46,23 @@ export default function Page({
         <SEO
           title="Comic list"
           description="Indie financial webcomic to get through life-bonkers"
+          twitterCardLarge={false}
         />
-        <div className="mt-24 md:mt-12 flex flex-col justify-between relative body-block px-6 md:px-12 max-w-4xl mx-auto overflow-hidden">
+        <div className="flex overflow-hidden relative flex-col justify-between px-6 mx-auto mt-24 max-w-4xl md:px-12 md:mt-12 body-block">
           <h1 className="relative z-20 text-3xl font-bold text-center font-[YanoneKaffeesatz-Bold]">
             All comics
           </h1>
           {tag && (
-            <div className="relative z-20 mt-4 flex items-center mx-auto">
+            <div className="flex relative z-20 items-center mx-auto mt-4">
               <div className="mr-2">Filtered by</div>
               <Link
                 href={`/comics`}
-                className="border-none text-sm px-2 py-1 rounded-lg text-white flex items-center justify-center gap-1 hover:cursor-pointer group"
+                className="flex gap-1 justify-center items-center py-1 px-2 text-sm text-white rounded-lg border-none hover:cursor-pointer group"
                 style={{ ...getNotionColor(tag) }}
               >
                 <Icon
                   icon="heroicons-tag-solid"
-                  className="w-3 h-3 text-white block group-hover:hidden"
+                  className="block w-3 h-3 text-white group-hover:hidden"
                   style={{
                     ...getNotionColor(tag),
                     background: 'none',
@@ -69,7 +70,7 @@ export default function Page({
                 />
                 <Icon
                   icon="heroicons-x-mark-solid"
-                  className="w-3 h-3 text-white hidden group-hover:block"
+                  className="hidden w-3 h-3 text-white group-hover:block"
                   style={{
                     ...getNotionColor(tag),
                     background: 'none',
@@ -79,7 +80,7 @@ export default function Page({
               </Link>
             </div>
           )}
-          <p className="text-center mt-8 text-3xl">
+          <p className="mt-8 text-3xl text-center">
             {new Date().getFullYear()}
           </p>
           <div
@@ -109,9 +110,9 @@ export default function Page({
                   <div className="p-2 text-center text-sm md:block bg-[#E3E3E3] border-b border-black">
                     {formatDate(item.date)}
                   </div>
-                  <div className="p-4 text-semibold flex flex-wrap md:flex-nowrap items-center justify-between uppercase text-base">
+                  <div className="flex flex-wrap justify-between items-center p-4 text-base uppercase md:flex-nowrap text-semibold">
                     <p>{item.title}</p>
-                    <div className="w-full h-24 mt-2 md:w-24 md:mt-0 ml-0 md:ml-2 overflow-hidden">
+                    <div className="overflow-hidden mt-2 ml-0 w-full h-24 md:mt-0 md:ml-2 md:w-24">
                       <img
                         alt="preview"
                         src={item.images[0]}

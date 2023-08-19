@@ -11,7 +11,6 @@ import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
 
-import { Toaster } from 'sonner'
 import classNames from 'classnames'
 
 const TopProgressBar = dynamic(() => import('~components/layout/nprogress'), {
@@ -48,13 +47,6 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
 export default function App(props: AppPropsWithLayout) {
   return (
     <StrictMode>
-      <Toaster
-        position="top-right"
-        closeButton
-        toastOptions={{
-          className: 'w-full',
-        }}
-      />
       <TopProgressBar />
       <InnerApp {...props} />
     </StrictMode>
