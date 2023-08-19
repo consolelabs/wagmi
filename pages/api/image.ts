@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { NextApiRequest, NextApiResponse } from 'next'
+import path from 'path'
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,12 +17,12 @@ export default async function handler(
     return
   }
   let ext = url.split('.').at(-1) ?? 'jpeg'
-  const buffer = fs.readFileSync(url)
+  const buffer = fs.readFileSync(path.resolve('..', '..', url))
   if (!['jpeg', 'png'].includes(ext.toLowerCase())) {
     ext = 'jpeg'
   }
 
   res.setHeader('Content-Type', `image/${ext}`)
-  res.setHeader('Cache-Controle', 'max-age=300')
+  res.setHeader('Cache-Control', 'max-age=300')
   res.send(buffer)
 }
