@@ -46,7 +46,7 @@ export const SEO = ({
 
     <meta
       property="twitter:card"
-      content={twitterCardLarge ? 'summary_large_card' : 'summary'}
+      content={twitterCardLarge ? 'summary_large_image' : 'summary'}
     />
     <meta property="twitter:domain" content={HOME_URL} />
     <meta property="twitter:url" content={url} />
