@@ -8,7 +8,8 @@ export default async function handler(
 ) {
   let url = req.query.url as string
   if (process.env.NODE_ENV === 'production') {
-    url = `./public${url}`
+    const __next__base__dirname = __dirname.split('.next')[0]
+    url = path.join(__next__base__dirname, 'public', url.slice(1))
   } else {
     url = `./public${url}`
   }
@@ -17,7 +18,7 @@ export default async function handler(
     return
   }
   let ext = url.split('.').at(-1) ?? 'jpeg'
-  const buffer = fs.readFileSync(path.resolve('..', '..', url))
+  const buffer = fs.readFileSync(url)
   if (!['jpeg', 'png'].includes(ext.toLowerCase())) {
     ext = 'jpeg'
   }
