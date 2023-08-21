@@ -38,7 +38,7 @@ export default function AboutPage() {
         <br />
         <br />
         Disclaimer: <br />
-        <ul className="list-disc">
+        <ul className="pl-4 list-disc">
           <li>The stories are not our financial advices.</li>
           <li>
             We can't promise you'll be the next Elon Musk or Warren Buffett.
