@@ -37,7 +37,7 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <main
-      className={classNames('relative overflow-x-hidden', BabyDoll.className)}
+      className={classNames('relative overflow-hidden', BabyDoll.className)}
     >
       {getLayout(<Component {...pageProps} />)}
     </main>
