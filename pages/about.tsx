@@ -23,10 +23,6 @@ export default function AboutPage() {
         financial planning play an important role in our life. And we think
         <br />
         <br />
-        Money makes the world go-'round, and we're here to help you navigate the
-        crazy ride!
-        <br />
-        <br />
         <ul className="pl-4 list-disc">
           <li>
             A better understanding will guides smart decisions for well-being
@@ -41,9 +37,14 @@ export default function AboutPage() {
         We hope WAGMI will be helpful to you. And let's kick off this journey.
         <br />
         <br />
-        Disclaimer: The stories are not our financial advices. We can't promise
-        you'll be the next Elon Musk or Warren Buffett. Make informed decisions
-        – do your assessment.
+        Disclaimer: <br />
+        <ul className="list-disc">
+          <li>The stories are not our financial advices.</li>
+          <li>
+            We can't promise you'll be the next Elon Musk or Warren Buffett.
+          </li>
+          <li>Make informed decisions – do your assessment.</li>
+        </ul>
       </div>
     </Layout>
   )

@@ -22,7 +22,7 @@ const NavLink = (props: { href?: string; children: ReactNode }) => {
       <Link
         href={props.href}
         key="prev"
-        className="relative w-full z-10 group flex flex-col items-center justify-center"
+        className="flex relative z-10 flex-col justify-center items-center w-full group"
       >
         {props.children}
       </Link>
@@ -34,7 +34,7 @@ const NavLink = (props: { href?: string; children: ReactNode }) => {
       type="button"
       key="prev-disabled"
       disabled
-      className="relative w-full z-10 group flex flex-col items-center justify-center cursor-not-allowed"
+      className="flex relative z-10 flex-col justify-center items-center w-full cursor-not-allowed group"
     >
       {props.children}
     </button>
@@ -57,6 +57,7 @@ function Navigation({
     ),
   )
   const isNewest = `/${data?.newestSlug}` === router.asPath
+  const isOldest = `/${data?.oldestSlug}` === router.asPath
 
   return (
     <div
@@ -66,49 +67,55 @@ function Navigation({
         'md:sticky md:top-0 mt-4 border-b-0 md:border-b', // desktop
       )}
     >
-      <div className="max-w-4xl mx-auto flex items-center justify-between space-x-2">
+      <div className="flex justify-between items-center mx-auto space-x-2 max-w-4xl">
         <div className="w-1/3">
           <Link
             href={
               data?.oldestSlug ? `/${data?.oldestSlug}` : '/why-we-have-pay-tax'
             }
             key="HOWDY, UNIVERSE!"
-            className="relative z-10 group flex flex-col items-center justify-center"
+            className="flex relative z-10 flex-col justify-center items-center group"
           >
-            <p className="text-center">HOWDY, UNIVERSE!</p>
+            <p
+              className={classNames('text-center', {
+                'underline md:no-underline': isOldest,
+              })}
+            >
+              HOWDY, UNIVERSE!
+            </p>
             <div className="relative h-[35px] w-[35px]">
               <Image
                 src={Neko0}
                 alt="all commic"
-                className="opacity-100 group-hover:opacity-0 absolute inset-0"
+                className="absolute inset-0 opacity-100 group-hover:opacity-0"
                 width={35}
                 height={35}
               />
               <Image
                 src={Neko0Gif}
                 alt="all commic"
-                className="opacity-0 group-hover:opacity-100 absolute inset-0"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100"
                 width={35}
                 height={35}
               />
             </div>
             <Image
               src="/assets/select-circle.svg"
-              alt="all commic"
+              alt="all comics"
               width={195}
               height={72}
               className={classNames(
                 'absolute scale-110 opacity-0 md:opacity-100 group-hover:block',
                 {
-                  hidden: router.asPath !== '/comics',
-                  block: router.asPath === '/comics',
+                  hidden: !isOldest,
+                  block: isOldest,
                 },
               )}
             />
           </Link>
         </div>
         <div className="w-1/3">
-          <div className="relative group flex items-center justify-center">
+          <div className="flex relative justify-center items-center group">
             <NavLink key="prev" href={prevID ? `/${prevID}` : undefined}>
               <p className="opacity-0 select-none">Prev</p>
               <Image src={ArrowLeft} alt="prev" width={30} height={10} />
@@ -117,7 +124,7 @@ function Navigation({
             <button
               type="button"
               key="random"
-              className="relative z-10 flex flex-col items-center justify-center cursor-pointer group"
+              className="flex relative z-10 flex-col justify-center items-center cursor-pointer group"
               disabled={!data?.slug}
               onClick={() => {
                 router.push(`/${data?.slug}`)
@@ -128,14 +135,14 @@ function Navigation({
                 <Image
                   src={Neko1}
                   alt="all commic"
-                  className="opacity-100 group-hover:opacity-0 absolute inset-0"
+                  className="absolute inset-0 opacity-100 group-hover:opacity-0"
                   width={35}
                   height={35}
                 />
                 <Image
                   src={Neko1Gif}
                   alt="all commic"
-                  className="opacity-0 group-hover:opacity-100 absolute inset-0"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
                   width={35}
                   height={35}
                 />
@@ -148,7 +155,7 @@ function Navigation({
             </NavLink>
             <Image
               src="/assets/select-circle.svg"
-              alt="all commic"
+              alt="all comics"
               width={195}
               height={72}
               className={classNames(
@@ -160,26 +167,32 @@ function Navigation({
         <div className="w-1/3">
           <NavLink href={data?.newestSlug ? `/${data?.newestSlug}` : undefined}>
             <>
-              <p className="text-center">Fresh out of the oven</p>
+              <p
+                className={classNames('text-center', {
+                  'underline md:no-underline': isNewest,
+                })}
+              >
+                Fresh out of the oven
+              </p>
               <div className="relative h-[35px] w-[35px]">
                 <Image
                   src={Neko2}
                   alt="all commic"
-                  className="opacity-100 group-hover:opacity-0 absolute inset-0"
+                  className="absolute inset-0 opacity-100 group-hover:opacity-0"
                   width={35}
                   height={35}
                 />
                 <Image
                   src={Neko2Gif}
                   alt="all commic"
-                  className="opacity-0 group-hover:opacity-100 absolute inset-0"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
                   width={35}
                   height={35}
                 />
               </div>
               <Image
                 src="/assets/select-circle.svg"
-                alt="all commic"
+                alt="all comics"
                 width={195}
                 height={72}
                 className={classNames(
