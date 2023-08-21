@@ -4,7 +4,7 @@ import { CONFIG } from '~components/layout/seo'
 class MyDocument extends Document {
   render(): JSX.Element {
     return (
-      <Html lang="en">
+      <Html data-overlayscrollbars-initialize lang="en">
         <Head>
           <link
             rel="apple-touch-icon"

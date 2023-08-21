@@ -52,23 +52,21 @@ export const Navbar = () => {
 
   return (
     <Fragment>
-      <nav className="z-50 fixed md:relative top-0 left-0 right-0 bg-white-pure">
-        <div className="flex gap-y-5 items-center py-3 md:py-5 px-6 mx-auto max-w-7xl md:px-12 shadow-md md:shadow-none">
-          <Link className="font-[YanoneKaffeesatz-Bold] text-3xl" href="/">
+      <nav className="fixed top-0 right-0 left-0 z-50 md:relative bg-white-pure">
+        <div className="flex gap-y-5 items-center py-3 px-6 mx-auto max-w-7xl shadow-md md:py-5 md:px-12 md:shadow-none">
+          <Link className="text-3xl font-[YanoneKaffeesatz-Bold]" href="/">
             WAGMI
           </Link>
           <NavLinks className="flex-1" pathname={asPath} />
         </div>
-        <div className="bg-black hidden md:flex font-[YanoneKaffeesatz-Bold] text-lg text-white uppercase flex-col md:flex-row items-center justify-center h-auto md:h-10 tracking-[0.5px]">
-          <div className="">
-            A webcomic so money-related, it&apos;ll make you cry
-          </div>
+        <div className="hidden flex-col justify-center items-center h-auto text-lg text-white uppercase bg-black md:flex md:flex-row md:h-10 font-[YanoneKaffeesatz-Bold] tracking-[0.5px]">
+          <div className="">A not financial advice webcomic</div>
           <Image
             src={Neko4}
             height={72}
             width={72}
             alt="cry sticker"
-            className="mx-0 md:mx-6 h-12 w-12 md:h-[72px] md:w-[72px]"
+            className="mx-0 w-12 h-12 md:mx-6 md:h-[72px] md:w-[72px]"
           />
           <div className="inline-flex items-center">
             brought to the screen by
@@ -76,7 +74,7 @@ export const Navbar = () => {
               href="https://console.so/"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center"
+              className="inline-flex justify-center items-center"
             >
               <Image
                 src={ConsolelabsWhite}

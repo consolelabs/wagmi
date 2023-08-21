@@ -1,15 +1,17 @@
 import '@fontsource/inter/900.css'
 import dynamic from 'next/dynamic'
 import localFont from 'next/font/local'
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import type { ReactNode, ReactElement } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { OverlayScrollbars } from 'overlayscrollbars'
 
 import 'nprogress/nprogress.css'
 import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
+import 'overlayscrollbars/overlayscrollbars.css'
 
 import classNames from 'classnames'
 
@@ -35,10 +37,13 @@ export function handleCancelRendering(e: any) {
 
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
+
+  useEffect(() => {
+    OverlayScrollbars(document.body, {})
+  }, [])
+
   return (
-    <main
-      className={classNames('relative overflow-hidden', BabyDoll.className)}
-    >
+    <main className={classNames('relative', BabyDoll.className)}>
       {getLayout(<Component {...pageProps} />)}
     </main>
   )
