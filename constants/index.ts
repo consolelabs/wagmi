@@ -3,7 +3,7 @@ import { DISCORD_LINK, TWITTER_LINK, GITBOOK_LINK, TELEGRAM_LINK } from '~envs'
 export const PAGES = {
   HOME: {
     path: '/',
-    title: 'WAGMI by Console Labs',
+    title: 'WAGMI comics',
   },
   COMICS: {
     path: '/comics',

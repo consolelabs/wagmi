@@ -35,11 +35,12 @@ export default function IndexPage({
       <Layout>
         <SEO
           title={data.title}
+          tailTitle
           description={data.description}
           image={data.images[0]}
           url={`${CONFIG.url}/${data.slug}`}
         />
-        <div className="relative w-screen z-10 mt-20 md:mt-0">
+        <div className="relative z-10 mt-20 w-screen md:mt-0">
           <ComicViewport data={data} prevID={prevPage} nextID={nextPage} />
         </div>
       </Layout>
