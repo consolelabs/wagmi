@@ -8,6 +8,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const comicData = await getFileBySlug(params?.slug as string)
   return {
     props: comicData,
+    revalidate: false,
   }
 }
 
