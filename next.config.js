@@ -6,7 +6,7 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'max-age=400',
+            value: 'max-age=400, immutable',
           },
         ],
       },
@@ -15,7 +15,7 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'max-age=400',
+            value: 'max-age=400, immutable',
           },
         ],
       },
@@ -24,7 +24,7 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'max-age=400',
+            value: 'max-age=400, immutable',
           },
         ],
       },
