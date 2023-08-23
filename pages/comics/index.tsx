@@ -9,10 +9,11 @@ import { SEO } from '~components/layout/seo'
 import { getNotionColor } from '~utils/color'
 import { formatDate } from '~utils/time'
 import { IComicMetadata, getAllCommics } from '~utils/mdx'
+import { generateRssFeed } from '~utils/generateRSSFeed'
 
 export const getStaticProps: GetStaticProps = async () => {
   const data = await getAllCommics()
-
+  await generateRssFeed(data)
   return {
     props: {
       data: data.map((item) => item.data),

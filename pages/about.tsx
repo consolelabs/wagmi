@@ -2,6 +2,7 @@
 import { Layout } from '~components/layout'
 import { SEO } from '~components/layout/seo'
 import { PAGES } from '~constants'
+import { CONTRIBUTORS } from '~libs/contributor'
 
 export default function AboutPage() {
   return (
@@ -45,6 +46,20 @@ export default function AboutPage() {
           </li>
           <li>Make informed decisions – do your assessment.</li>
         </ul>
+        <br />
+        Thanks to{' '}
+        {CONTRIBUTORS.map((contributor, idx) => (
+          <a
+            href={contributor.link}
+            key={`${contributor.name}-${idx}`}
+            className="italic"
+          >
+            {contributor.name}
+            {idx < CONTRIBUTORS.length - 2 ? ', ' : ''}
+            {idx === CONTRIBUTORS.length - 2 ? ' and ' : ''}
+          </a>
+        ))}
+        &nbsp; for their contributions.
       </div>
     </Layout>
   )

@@ -16,11 +16,14 @@ export interface IComicMetadata {
 export function getFilePaths() {
   const paths = fs
     .readdirSync(DB_PATH)
-    .filter((path) => /\.mdx?$/.test(path))
-    .map((path) => path.replace(/\.mdx?$/, ''))
+    .filter((path: string) => /\.mdx?$/.test(path))
+    .map((path: string) => path.replace(/\.mdx?$/, ''))
 
   const pathsMap: Record<string, number> = paths.reduce(
-    (acc, path, idx) => ({ ...acc, [path]: idx }),
+    (acc: Record<string, number>, path: string, idx: number) => ({
+      ...acc,
+      [path]: idx,
+    }),
     {},
   )
 
@@ -41,7 +44,7 @@ export function getOldestFile() {
 
 export function getRandomFile(slug: string) {
   const { paths } = getFilePaths()
-  const actualSlug = paths.find((path) => path.includes(slug))
+  const actualSlug = paths.find((path: string) => path.includes(slug))
   let randomSlug = actualSlug
 
   while (!randomSlug || randomSlug === actualSlug) {
@@ -54,7 +57,7 @@ export function getRandomFile(slug: string) {
 
 export async function getFileBySlug(slug: string) {
   const { paths, pathsMap } = getFilePaths()
-  const actualSlug = paths.find((path) => path.includes(slug))
+  const actualSlug = paths.find((path: string) => path.includes(slug))
   if (!actualSlug) {
     throw new Error(`No file with slug "${slug}" found`)
   }
