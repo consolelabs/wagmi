@@ -46,7 +46,7 @@ export default function Page({
       <Layout>
         <SEO
           title="Comic list"
-          description="Indie financial webcomic to get through life-bonkers"
+          description="Indie financial webcomic to get you through life-bonkers"
           twitterCardLarge={false}
         />
         <div className="flex overflow-hidden relative flex-col justify-between px-6 mx-auto mt-24 max-w-4xl md:px-12 md:mt-12 body-block">

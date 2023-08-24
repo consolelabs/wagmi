@@ -13,14 +13,6 @@ export const PAGES = {
     path: '/about',
     title: 'About',
   },
-  TOS: {
-    path: '/tos',
-    title: 'Terms of Service',
-  },
-  PRIVACY: {
-    path: '/privacy',
-    title: 'Privacy Policy',
-  },
 }
 
 export const SOCIAL_LINKS = {

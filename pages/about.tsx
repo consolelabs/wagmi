@@ -9,7 +9,7 @@ export default function AboutPage() {
     <Layout>
       <SEO
         title={PAGES.ABOUT.title}
-        description="Indie financial webcomic to get through life-bonkers"
+        description="Indie financial webcomic to get you through life-bonkers"
         twitterCardLarge={false}
       />
       <h1 className="pt-24 text-5xl text-center font-[YanoneKaffeesatz-Bold]">
@@ -38,6 +38,55 @@ export default function AboutPage() {
         We hope WAGMI will be helpful to you. And let's kick off this journey.
         <br />
         <br />
+        <p className="text-2xl font-[YanoneKaffeesatz-Bold]">Contact</p>
+        <ul className="pl-4 list-disc">
+          <li>
+            If you'd like to say hi:{' '}
+            <a className="underline" href="mailto:gm@console.so">
+              gm@console.so
+            </a>
+            .
+          </li>
+          <li>
+            For material and idea contributions:{' '}
+            <a className="underline" href="mailto:wagmi@console.so">
+              wagmi@console.so
+            </a>
+            .
+          </li>
+          <li>
+            Join us on Telegram:{' '}
+            <a className="underline" href="https://t.me/+mzE3DsHNLeNjNzRl">
+              @wagmi
+            </a>
+            .
+          </li>
+        </ul>
+        <br />
+        <p className="text-2xl font-[YanoneKaffeesatz-Bold]">Token</p>
+        We use the $WAGMI token to reward our contributors and provide holders
+        with the ability to participate in the growth of WAGMI.
+        <br />
+        <br />
+        <p className="text-2xl font-[YanoneKaffeesatz-Bold]">Contribution</p>
+        We welcome more stories and perspectives. Any topic that you find
+        relevant or if you love what we do, you can contribute by sending them
+        to our email.
+        <br />
+        <br />
+        <p className="text-2xl font-[YanoneKaffeesatz-Bold]">
+          Special thanks to:
+        </p>
+        <ul className="pl-4 list-disc">
+          <li>Console Labs team members</li>
+          <li>
+            <a className="underline" href="https://github.com/vdhieu">
+              @hieuvd
+            </a>{' '}
+            for crafting this website
+          </li>
+        </ul>
+        <br />
         Disclaimer: <br />
         <ul className="pl-4 list-disc">
           <li>The stories are not our financial advices.</li>
@@ -47,19 +96,6 @@ export default function AboutPage() {
           <li>Make informed decisions – do your assessment.</li>
         </ul>
         <br />
-        Thanks to{' '}
-        {CONTRIBUTORS.map((contributor, idx) => (
-          <a
-            href={contributor.link}
-            key={`${contributor.name}-${idx}`}
-            className="italic"
-          >
-            {contributor.name}
-            {idx < CONTRIBUTORS.length - 2 ? ', ' : ''}
-            {idx === CONTRIBUTORS.length - 2 ? ' and ' : ''}
-          </a>
-        ))}
-        &nbsp; for their contributions.
       </div>
     </Layout>
   )

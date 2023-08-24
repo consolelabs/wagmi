@@ -10,7 +10,7 @@ export const TWITTER_LINK =
 export const GITHUB_LINK =
   process.env.GITHUB_LINK || 'http://github.com/dwarvesf'
 export const TELEGRAM_LINK =
-  process.env.TELEGRAM_LINK || 'https://t.me/console_labs'
+  process.env.TELEGRAM_LINK || 'https://t.me/+mzE3DsHNLeNjNzRl'
 
 export const HOME_URL =
   process.env.NEXT_PUBLIC_HOME_URL || 'https://wagmi.console.so'
