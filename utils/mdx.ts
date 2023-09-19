@@ -10,6 +10,7 @@ export interface IComicMetadata {
   date: string
   slug: string
   tags: string[]
+  show_title: boolean
   images: string[]
 }
 

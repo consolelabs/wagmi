@@ -31,7 +31,10 @@ function ComicViewport({
             </Link>
           ))}
         </div>
-        <div className="px-6">
+        {data.show_title && (
+          <h1 className="text-5xl text-center mt-6">{data.title}</h1>
+        )}
+        <div className="px-6 mt-6">
           {data.images?.map((file) => (
             <img
               key={file}
