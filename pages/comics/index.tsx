@@ -16,7 +16,7 @@ export const getStaticProps: GetStaticProps = async () => {
   await generateRssFeed(data)
   return {
     props: {
-      data: data.map((item) => item.data),
+      data: data.map((item) => item.data).reverse(),
     },
     revalidate: 10,
   }
