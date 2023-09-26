@@ -8,9 +8,13 @@ export const DISCORD_LINK =
 export const TWITTER_LINK =
   process.env.TWITTER_LINK || 'https://twitter.com/console_labs'
 export const GITHUB_LINK =
-  process.env.GITHUB_LINK || 'http://github.com/dwarvesf'
+  process.env.GITHUB_LINK || 'https://github.com/consolelabs'
 export const TELEGRAM_LINK =
   process.env.TELEGRAM_LINK || 'https://t.me/+mzE3DsHNLeNjNzRl'
+export const FACEBOOK_LINK =
+  process.env.FACEBOOK_LINK || 'https://facebook.com/wagmicomics'
+export const CONSOLELABS_LINK =
+  process.env.CONSOLELABS_LINK || 'https://log.console.so'
 
 export const HOME_URL =
   process.env.NEXT_PUBLIC_HOME_URL || 'https://wagmi.console.so'

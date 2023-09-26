@@ -20,6 +20,17 @@ export const Footer = () => (
       <a href={SOCIAL_LINKS.GITHUB_LINK} target="_blank" rel="noreferrer">
         <Icon icon="simple-icons:github" className="w-4 h-4 text-black" />
       </a>
+      <a href={SOCIAL_LINKS.FACEBOOK_LINK} target="_blank" rel="noreferrer">
+        <Icon icon="simple-icons:facebook" className="w-4 h-4 text-black" />
+      </a>
+      <a href={SOCIAL_LINKS.CONSOLELABS_LINK} target="_blank" rel="noreferrer">
+        <Image
+          src={ConsolelabsBlack}
+          alt="consolelab logo"
+          width={18}
+          height={18}
+        />
+      </a>
     </div>
     <Image
       src={Neko5}

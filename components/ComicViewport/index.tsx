@@ -15,17 +15,17 @@ function ComicViewport({
   nextID?: string | null
 }) {
   return (
-    <div className="relative z-40 w-full m-auto">
+    <div className="relative z-40 m-auto w-2/3">
       <Navigation prevID={prevID} nextID={nextID} />
 
-      <div className="relative max-w-4xl mx-auto z-0">
-        <div className="text-2xl flex items-center justify-center mt-6 space-x-2 uppercase">
+      <div className="relative z-0 mx-auto max-w-4xl">
+        <div className="flex justify-center items-center mt-6 space-x-2 text-2xl uppercase">
           <span className="text-xs md:text-sm">{formatDate(data.date)}</span>
           {data.tags.map((tg) => (
             <Link
               key={tg}
               href={`/comics?tag=${tg}`}
-              className="inline-flex items-center justify-center"
+              className="inline-flex justify-center items-center"
             >
               <Tag tag={tg} />
             </Link>
@@ -40,7 +40,7 @@ function ComicViewport({
               key={file}
               src={file}
               alt={data.title}
-              className="max-w-full mx-auto"
+              className="mx-auto max-w-full"
             />
           ))}
         </div>
