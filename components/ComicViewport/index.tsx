@@ -15,7 +15,7 @@ function ComicViewport({
   nextID?: string | null
 }) {
   return (
-    <div className="relative z-40 m-auto w-2/3">
+    <div className="relative z-40 px-4 m-auto w-full sm:px-10 sm:max-w-[500px] md:max-w-[700px]">
       <Navigation prevID={prevID} nextID={nextID} />
 
       <div className="relative z-0 mx-auto max-w-4xl">
@@ -32,9 +32,11 @@ function ComicViewport({
           ))}
         </div>
         {data.show_title && (
-          <h1 className="text-5xl text-center mt-6">{data.title}</h1>
+          <h1 className="mt-6 text-xl text-center sm:text-3xl md:text-5xl">
+            {data.title}
+          </h1>
         )}
-        <div className="px-6 mt-6">
+        <div className="mt-6">
           {data.images?.map((file) => (
             <img
               key={file}
